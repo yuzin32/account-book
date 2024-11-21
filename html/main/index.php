@@ -14,7 +14,7 @@
             background-color: #f4f4f4;
         }
         header {
-            background-color: #333;
+            background-color: #f4f4f4;
             color: #fff;
             padding: 1em;
             text-align: center;
@@ -23,7 +23,7 @@
             margin: 20px;
         }
         footer {
-            background-color: #333;
+            background-color:#f4f4f4;
             color: #fff;
             padding: 1em;
             text-align: center;
@@ -36,7 +36,6 @@
 <body>
 
 	<header>
-		<h1>웹사이트 제목</h1>
 	</header>
 
 	<main>
