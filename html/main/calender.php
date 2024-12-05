@@ -67,9 +67,9 @@ $startDayOfWeek = date('w', $firstDayOfMonth);
 <div class="tabs">
     <!-- 탭 버튼 -->
     <div class="tab-buttons">
-        <button class="tab-link <?php echo $p_active1;?>">Tab 1</button>
-        <button class="tab-link <?php echo $p_active2;?>">Tab 2</button>
-        <button class="tab-link <?php echo $p_active3;?>">Tab 3</button>
+        <button class="tab-link active">Tab 1</button>
+        <button class="tab-link ">Tab 2</button>
+        <button class="tab-link ">Tab 3</button>
     </div>
     <!-- 탭 내용 -->
     <div class="tab-content">
