@@ -250,19 +250,23 @@ $vSystem_member_type_count = count($vSystem_member_type);
 
 
 //카드종류
-$system_account_card[] = "삼성카드";
-$system_account_card[] = "현대카드";
-$system_account_card[] = "BC카드";
-$system_account_card[] = "NH농협카드";
-$system_account_card[] = "하나(외환)카드";
-$system_account_card[] = "기업IBK";
-$system_account_card[] = "국민카드";
-$system_account_card[] = "롯데카드";
-$system_account_card[] = "신한카드";
-$system_account_card[] = "씨티카드";
-$system_account_card[] = "SC카드";
-$system_account_card[] = "기타";
-$system_account_card_cnt = count($system_account_card);
+$system_payment_type= array(
+"bank" => "계좌이체",
+"card" => "카드",
+"pay" => "페이"
+);
+
+// 이메일뒷자리
+$vSystem_email_back = array(
+	"naver.com",
+	"daum.net",
+	"hanmail.net",
+	"gmail.com",
+	"hotmail.com",
+	"dreamwiz.com",
+	"freechal.com",
+	"hanmir.com"
+);
 
 $system_langs['kor'] = '한국어';
 $system_langs['eng'] = '영어';
@@ -284,16 +288,6 @@ function getNationlist($isEn) {
 
 
 
-// 이메일뒷자리
-$vSystem_email_back = array(
-	"naver.com",
-	"daum.net",
-	"hanmail.net",
-	"gmail.com",
-	"hotmail.com",
-	"dreamwiz.com",
-	"freechal.com",
-	"hanmir.com"
-);
+
 
 ?>

@@ -1,4 +1,4 @@
-<?php include_once  "/account_book/Setting/config.inc.php";?>
+<?php include_once  "/demoyujin/www/account_book/Setting/config.inc.php";?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>

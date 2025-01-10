@@ -16,7 +16,7 @@ class MySQLPDOClass
             try {
                 $this->pdo = new PDO($dsn, $username, $password);
                 $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "Connected successfully\n";
+                //echo "Connected successfully\n";
             } catch (PDOException $e) {
                 die("Connection failed: " . $e->getMessage());
             }
@@ -27,7 +27,7 @@ function fetchAllRows($sql) {
     $pdo = $this->getPDOConnection();
 
     try {
-        echo "Executing SQL: $sql\n";
+        //echo "Executing SQL: $sql\n";
         $stmt = $pdo->query($sql);
 
         if (!$stmt) {
@@ -44,6 +44,27 @@ function fetchAllRows($sql) {
         }*/
 
         return $rows;
+    } catch (PDOException $e) {
+        die("Error fetching rows: " . $e->getMessage());
+    }
+}
+function fetchRow($sql) {
+    $pdo = $this->getPDOConnection();
+
+    try {
+        //echo "Executing SQL: $sql\n";
+        $stmt = $pdo->query($sql);
+
+        if (!$stmt) {
+            $errorInfo = $pdo->errorInfo();
+            die("Query Error: " . $errorInfo[2]); // MySQL 에러 메시지 출력
+        }
+
+        // 한 행만 반환할 때는 fetch() 사용
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // 값이 없으면 0을 반환
+        return $row ? $row : [0];
     } catch (PDOException $e) {
         die("Error fetching rows: " . $e->getMessage());
     }

@@ -46,6 +46,7 @@ include_once  $path_setting."config.setting.inc.php";
 //쿼리결과 기본변수 
 include_once  $path_setting."lib/config.query.inc.php";
 
+echo'설정';
 /*로그인 세션
 $sess_userid = trim(get_session("_SESSION_USERID"));
 $sess_name = trim(get_session("_SESSION_USERNAME"));
