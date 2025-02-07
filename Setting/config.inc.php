@@ -34,6 +34,10 @@ ini_set('upload_max_filesize', '100M');
 date_default_timezone_set('Asia/Seoul');
 ini_alter("magic_quotes_sybase",1);
 
+if (!empty($_POST)) {
+    extract($_POST);
+}
+
 $_syspath = $_SERVER["DOCUMENT_ROOT"]."/account_book";
 $path_setting =$_syspath.'/Setting/';
 //DB커넥트
@@ -43,8 +47,12 @@ $objdb = new MySQLPDOClass(); // DB
 
 //시스템 기본 변수 및 데이터 셋팅
 include_once  $path_setting."config.setting.inc.php";
+
 //쿼리결과 기본변수 
 include_once  $path_setting."lib/config.query.inc.php";
+
+//쿼리결과 기본변수 
+include_once  $path_setting."lib/config.func.inc.php";
 
 echo'설정';
 /*로그인 세션
