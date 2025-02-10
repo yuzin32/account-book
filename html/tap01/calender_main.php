@@ -19,7 +19,7 @@ $lastDayOfMonth = date('t', $firstDayOfMonth);
 $startDayOfWeek = date('w', $firstDayOfMonth);
 //지출수입 구분값 
 if(empty($account_type))$account_type=0;
-
+$serch_month=$main_month
 ?>
 <script>
 function data_save(formName) {
@@ -89,7 +89,7 @@ function data_save(formName) {
 				<select name="serch_month">
 				<option value="" >검색 월을 선택하세요</option>
 				<?for($m=1; $m<=12; $m++){?>
-					<option value="<?echo $m;?>" <?if($month==$m)echo 'selected';?> ><?echo $m;?>
+					<option value="<?echo $m;?>" <?selected_on($main_month,$m);?>><?echo $m;?>월
 					<?}?>
 				</select>
 				날짜검색:

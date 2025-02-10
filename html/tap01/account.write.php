@@ -1,24 +1,26 @@
 <?
 include_once "/demoyujin/www/account_book/html/include/head.php";  
 
-//지출수단
+//지출수단 리스트
 $sql = "select account_category_idx,account_category_name,statistics_use from acbook_account_category";
 $ac_rows = $objdb->fetchAllRows($sql);
-//은행
+//은행 리스트
 $sql ="select systemcode_idx,systemcode_value,systemcode_name from acbook_systemcode where systemcode_key='bank'";
 $bank_rows = $objdb->fetchAllRows($sql);
-//지불수단
+
+//지불수단 리스트
 $sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn from acbook_payment";
 $pay_rows = $objdb->fetchAllRows($sql);
 
-
-
+//적금 리스트
+$sql =" select savings_idx,savings_name from acbook_savings";
+$s_rows = $objdb->fetchAllRows($sql);
 
 ?>
 <form action="account.call.php" method="POST">
 <input name='smode' value='a_save' >
 <input type='hidden' name="month" value="<?echo $main_month;?>">	
-<input type='hidden' name="nyear" value="<?echo $main_nyear;?>">	
+<input type='hidden' name="nyear" value="<?echo $main_year;?>">	
     <table class="ac_write">
         <tbody>
             <tr>
@@ -68,7 +70,10 @@ $pay_rows = $objdb->fetchAllRows($sql);
                 <th><label for="savings_yn">적금</label></th>
                 <td><input type='checkbox' name='savings_yn' value='y'>
                     <select name="savings_idx" id="savings_idx">
-                        <option value="">적금을 선택하세요</option>
+						<option value="">적금을 선택하세요</option>
+						<? foreach ($s_rows as $s_row) { ?>
+						<option value="<?echo $s_row['savings_idx']?>"><?echo $s_row['savings_name']?></option>
+						<?}?>
                     </select>
                 </td>
             </tr>
