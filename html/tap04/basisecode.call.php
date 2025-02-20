@@ -15,6 +15,7 @@ if($smode =='ac_save'){//지출분야
 					$objdb->updateRow(
 					'acbook_account_category',
 					array(
+						'account_type' => $account_type[$i],
 						'account_category_name' => $account_category_name[$i],
 						'statistics_use' => $statistics_use[$i]
 						),
@@ -29,6 +30,7 @@ if($smode =='ac_save'){//지출분야
 			'acbook_account_category',
 			array(
 				'account_category_idx' =>  $row['max_account_category_idx'],
+				'account_type' => $add_account_type,
 				'account_category_name' => $add_account_category_name,
 				'statistics_use' => $add_statistics_use
 				)

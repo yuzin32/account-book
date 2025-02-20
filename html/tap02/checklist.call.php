@@ -10,21 +10,17 @@ $check_rows = $objdb->fetchAllRows($sql);
 print_r($_POST);
 
 if($smode =='c_s_update'){
-		$i=0;
 		foreach($check_sub_idx as $c_s_idx){
-		$complete_value = isset($complete[$i]) ? $complete[$i] : ''; 
-		$memo_value = isset($memo[$i]) ? $memo[$i] : '';
+		$memo_value = isset($memo[$c_s_idx]) ? $memo[$c_s_idx] : '';
 			$sql=$objdb->updateRow(
 				'acbook_checklist_sub',
 				 array(
-					'complete' => $complete_value,
+					'complete' => 'y',
 					'memo' => $memo_value,
 					'check_date'=>$check_date
 				),
 				'check_sub_idx='.$c_s_idx
 			);
-			$i++;
-			
 		}
 }else if($smode =='c_s_save'){//생성
 		foreach($check_rows as $c_row){
@@ -48,6 +44,10 @@ if($smode =='c_s_update'){
 				);
 			}
 		}//foreach complete
+	}else if($smode =='c_s_del'){//생성
+		$c_s_idxs= implode(',',$check_sub_idx);
+		//echo $a_idxs;exit;
+		$rowsDeleted = $objdb->deleteRow('acbook_checklist_sub', 'check_sub_idx in ('.$c_s_idxs.')');
 	}
    //header("Location: ./checklist_main.php");
 	$pdo = null; //DB작업종료

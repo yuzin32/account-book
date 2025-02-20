@@ -1,6 +1,6 @@
 <?php include_once  "/demoyujin/www/account_book/Setting/config.inc.php";?>
 <?
-print_r($_POST);
+//print_r($_POST);
 $savings_yn = isset($savings_yn) ? $savings_yn : 'n'; // 기본값 'n' 설정
 
 if($smode =='a_save'){//지출분야
@@ -32,6 +32,7 @@ if($smode =='a_save'){//지출분야
 			'month' => $month,//달
 			'nyear' => $nyear,//년
 			'account_date' => $account_date,//결제일
+			'loan_yn' => $loan_yn
 			);
 		if($savings_yn=='y'){
 			$insert_into['savings_yn'] = $savings_yn;
@@ -45,8 +46,14 @@ if($smode =='a_save'){//지출분야
 		$objdb->insertRow('acbook_account',$insert_into	);
 	}
 
+}else if($smode == 'a_del'){//삭제
+	$a_idxs= implode(',',$account_idx);
+	//echo $a_idxs;exit;
+	$rowsDeleted = $objdb->deleteRow('acbook_account', 'account_idx in ('.$a_idxs.')');
+
 }
-header("Location: ./calender_main.php");
+
+header("Location:./calender_main.php?account_date=".$account_date);
 $pdo = null; //DB작업종료
 exit();
 ?>

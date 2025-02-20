@@ -1,38 +1,37 @@
 <?
 include_once "/demoyujin/www/account_book/html/include/head.php";  
 
-//지출수단 리스트
-$sql = "select account_category_idx,account_category_name,statistics_use from acbook_account_category";
-$ac_rows = $objdb->fetchAllRows($sql);
-//은행 리스트
-$sql ="select systemcode_idx,systemcode_value,systemcode_name from acbook_systemcode where systemcode_key='bank'";
-$bank_rows = $objdb->fetchAllRows($sql);
-
-//지불수단 리스트
-$sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn from acbook_payment";
-$pay_rows = $objdb->fetchAllRows($sql);
-
-//적금 리스트
-$sql =" select savings_idx,savings_name from acbook_savings";
-$s_rows = $objdb->fetchAllRows($sql);
-
 ?>
+<script>
+function get_save_month(){
+	var dateValue = document.getElementById("account_date").value;
+
+
+	if(dateValue){
+		var nyear = new Date(dateValue).getFullYear();
+		var month = new Date(dateValue).getMonth()+1;
+		document.getElementById("month").value = month;
+		document.getElementById("nyear").value = nyear;
+	
+	}
+
+}
+</script>
+
 <form action="account.call.php" method="POST">
 <input name='smode' value='a_save' >
-<input type='hidden' name="month" value="<?echo $main_month;?>">	
-<input type='hidden' name="nyear" value="<?echo $main_year;?>">	
+<input type='hidden' name="month" id='month'value="<?echo $main_month;?>">	
+<input type='hidden' name="nyear" id='nyear' value="<?echo $main_year;?>">	
     <table class="ac_write">
         <tbody>
             <tr>
                 <th><label for="type">지출/수입:</label></th>
                 <td>
-                    <select name="account_type" id="account_type">
-						<option value="0" >지출</option>
-                        <option value="1">수입</option>
-                    </select>
+					<input type='hidden' name="account_type" id='account_type' value="<?echo $account_type?>"><?echo $vSystem_account_type[$account_type]?>
+
                 </td>
             </tr>
-            <input type="date" id="account_date" name="account_date" value="<?echo $account_date?>">
+            <input type="date" id="account_date" name="account_date" value="<?echo $account_date?>" onchange="get_save_month()">
             <tr>
                 <th><label for="account_category_idx">지출 분야:</label></th>
                 <td>
@@ -75,6 +74,16 @@ $s_rows = $objdb->fetchAllRows($sql);
 						<option value="<?echo $s_row['savings_idx']?>"><?echo $s_row['savings_name']?></option>
 						<?}?>
                     </select>
+                </td>
+            </tr>
+			<tr>
+                <th><label for="loan_yn">채무</label></th>
+                <td><input type='checkbox' name='loan_yn' value='y'>
+<!--                     <select name="savings_idx" id="savings_idx">
+                    						<option value="">적금을 선택하세요</option>
+                    						<? foreach ($s_rows as $s_row) { ?>
+                    						<option value="<?echo $s_row['savings_idx']?>"><?echo $s_row['savings_name']?></option>
+                    						<?}?>-->
                 </td>
             </tr>
 

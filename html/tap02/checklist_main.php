@@ -29,6 +29,18 @@ function data_save(formName) {
     const form = document.forms[formName]; // 폼 이름으로 선택
         form.submit(); // submit 함수 호출
 }
+function all_checked(source) {
+    const checkboxes = document.querySelectorAll('.checkbox');
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = source.checked;
+    });
+}
+
+function data_del(formName,smode) {
+    const form = document.forms[formName]; // 폼 이름으로 선택
+	form["smode"].value = smode;
+    form.submit(); // submit 함수 호출
+}
 </script>
 <body>
 	<header>
@@ -66,7 +78,7 @@ function data_save(formName) {
            <table>
                 <thead>
                     <tr>
-                        <th><input type='checkbox'></th></th>
+                        <th><input type='checkbox' onclick="all_checked(this)"></th></th>
                         <th>내용</th>
                         <th>지출분야</th>
 						<th>기본금액</th>
@@ -77,8 +89,7 @@ function data_save(formName) {
                     <? foreach ($check_sub_rows as $c_row) { ?>
                     <tr>
                         <td>
-						<input type='checkbox' name="complete[]" value="y" <?checked_on('y',$c_row['complete'])?>>
-						<input type='hidden' name="check_sub_idx[]" value="<?echo $c_row['check_sub_idx'];?>">
+						<input type='checkbox' name="check_sub_idx[]" value="<?echo $c_row['check_sub_idx'];?>" <?checked_on('y',$c_row['complete'])?> class="checkbox">
 						</td>
                         <td><?echo $c_row['title'];?></td>
                         <td>
@@ -87,13 +98,14 @@ function data_save(formName) {
 							}?>
                         </td>
 						<td><?echo $c_row['default_price'];?>원</td>
-                        <td><input type='text' name="memo[]" value="<?echo $c_row['memo'];?>"></td>
+                        <td><input type='text' name="memo[<?echo $c_row['check_sub_idx'];?>]" value="<?echo $c_row['memo'];?>"></td>
                     </tr>
                     <?}?>
                 </tbody>
             </table>
-			 <a href="javascript://" onclick="set_new_check('c_s_form')">초기생성</a>
+			<a href="javascript://" onclick="set_new_check('c_s_form')">초기생성</a>
             <a href="javascript://" onclick="data_save('c_s_form')">저장</a>
+			<a href="javascript://" onclick="data_del('c_s_form','c_s_del')">삭제</a>
         </form>
         </div>
         <!-- 체크리스트 저장폼 종료  -->

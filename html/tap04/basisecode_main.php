@@ -2,7 +2,7 @@
 $tap_code=04;
 
 //지출수단
-$sql = "select account_category_idx,account_category_name,statistics_use from acbook_account_category";
+$sql = "select account_category_idx,account_type,account_category_name,statistics_use from acbook_account_category";
 $ac_rows = $objdb->fetchAllRows($sql);
 //은행
 $sql ="select systemcode_idx,systemcode_value,systemcode_name from acbook_systemcode where systemcode_key='bank'";
@@ -85,6 +85,7 @@ function on_update(row){
 				<thead>
 					<tr>
 						<th><input type='checkbox'></th>
+						<th>지출/수입</th>
 						<th>지출분야</th>
 						<th>통계사용여부</th>
 					</tr>
@@ -93,7 +94,12 @@ function on_update(row){
 				<? foreach ($ac_rows as $ac_row) { ?>
 					<tr>
 						<td><input type='checkbox' name="account_category_idx[]" value="<?echo $ac_row['account_category_idx'];?>"></td>
-
+						<td>
+							<select name="account_type" id="account_type" >
+								<option value="0" <?selected_on(0,$ac_row['account_type']);?>>지출</option>
+								<option value="1" <?selected_on(1,$ac_row['account_type']);?>>수입</option>
+							</select>
+						</td>
 						<td > <input type='text' name="account_category_name[]" value="<?echo $ac_row['account_category_name'];?>" disabled>
 						<a href="javascript://" onclick="on_update(this)">수정</a>
 						</td>
@@ -104,6 +110,11 @@ function on_update(row){
 				</tbody>
 			</table>
 			<div class="input-new">
+				지출/수입
+                    <select name="add_account_type" id="add_account_type">
+						<option value="0">지출</option>
+                        <option value="1">수입</option>
+                    </select>
 				지출분야: <input type='text' name="add_account_category_name" value="" class="put">
 				통계반영여부: <input type='checkbox' name="add_statistics_use" value="y"  class="put">
 				<a href="javascript://" onclick="data_save('ac_form')">저장</a>

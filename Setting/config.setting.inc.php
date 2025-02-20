@@ -234,27 +234,13 @@ $vSystem_member_type[] = "auditor";
 $vSystem_member_type[] = "teacher";
 $vSystem_member_type[] = "manager";
 
-$vSystem_member_type_name[] = "일반회원";
-$vSystem_member_type_name[] = "학생";
-$vSystem_member_type_name[] = "졸업생";
-$vSystem_member_type_name[] = "연구과정학생";
-$vSystem_member_type_name[] = "청강생";
-$vSystem_member_type_name[] = "교수";
-$vSystem_member_type_name[] = "관리자";
-$vSystem_member_type_count = count($vSystem_member_type);
-
 //결제코드지원
 //$str_account_type = "card,cash,nbank,dbank2,dbank3,abank,online,phone";
 //$str_account_type_name = "카드,현금,무통장,분할2개월,분할3개월,가상계좌,온라인예약,핸드폰결제";
-
-
-
-//카드종류
-$system_payment_type= array(
-"bank" => "계좌이체",
-"card" => "카드",
-"pay" => "페이"
-);
+$vSystem_account_type = array(
+	0=>'지출',
+	1=>'수입',
+	);
 
 // 이메일뒷자리
 $vSystem_email_back = array(

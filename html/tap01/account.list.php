@@ -1,69 +1,27 @@
 <?
 include_once "/demoyujin/www/account_book/html/include/head.php";  
 
-//지출분야
-$sql = "select account_category_idx,account_category_name,statistics_use from acbook_account_category";
-$ac_rows = $objdb->fetchAllRows($sql);
-//은행
-$sql ="select systemcode_idx,systemcode_value,systemcode_name from acbook_systemcode where systemcode_key='bank'";
-$bank_rows = $objdb->fetchAllRows($sql);
-//지불수단
-$sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn from acbook_payment";
-$pay_rows = $objdb->fetchAllRows($sql);
-
 $wherey='';
-if(isset($serch_month))$wherey =" and month=".$serch_month;
-if(isset($search_date))$wherey =" and account_date=".$search_date;
-if(isset($account_type))$wherey=" and account_type=".$account_type;
+if(!empty($search_nyaer))$wherey .=" and nyear=".$search_nyaer;
+if(!empty($search_month))$wherey .=" and month=".$search_month;
+if(!empty($search_day))$wherey .=" and account_date=".$account_date;
+if(!empty($search_account_type))$wherey .=" and account_type=".$search_account_type;
+if(!empty($search_payment_idx))$wherey .=" and payment_idx=".$search_payment_idx;
+if(!empty($search_account_category_idx))$wherey .=" and account_category_idx=".$search_account_category_idx;
 
 //지출내역
 $sql ="select account_idx,account_type,account_category_idx,title,price,savings_idx,savings_yn,loan_yn,loan_type,loan_complete,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo
-from acbook_account where account_idx >= 0".$wherey;
+from acbook_account where account_idx >= 0".$wherey." order by account_date desc";
+echo $sql;
 $acount_rows = $objdb->fetchAllRows($sql);
 
 /*적금 ,  채무 관련 코딩 필요*/
 
 ?>
 <script>
-function on_update(row){
-	 const tr = row.closest('tr');
-	 const inputs = tr.querySelectorAll('input');
-	 const selects = tr.querySelectorAll('select');
-	 
-     var check_yn='y'
-
-        // readonly 속성 제거
- inputs.forEach(input => {
-        // 체크박스인 경우 체크 상태로 변경
-       /* if (input.type === 'checkbox' && input.name.slice(-5)=='idx[]'){
-			if(input.checked == false){
-				input.checked = true;
-                check_yn='n';
-			}else{
-                input.checked = false;
-            }
-        }*/
-      });
-      inputs.forEach(input => {
-          if( check_yn=='n'){
-              input.removeAttribute('disabled');
-          }else if(check_yn=='y'){
-              input.setAttribute('disabled', 'true');
-          }
-      });
-	  selects.forEach(select => {
-          if( check_yn=='n'){
-              select.removeAttribute('disabled');
-          }else if(check_yn=='y'){
-              select.setAttribute('disabled', 'true');
-          }
-      });
-}
 </script>
-        <form name="c_s_form" action="/account_book/html/tap02/checklist.call.php"  method="POST" >
-        <input type='hidden' name="month" value="<?echo $month;?>">	
-		<input type='hidden' name="nyear" value="<?echo $nyear;?>">		
-		<input type='hidden' name="smode" id='smode'value="c_s_update">		
+        <form name="a_form" action="/account_book/html/tap01/account.call.php"  method="POST" >
+		<input type='hidden' name="smode" id='smode' value="">		
            <table>
                 <thead>
                     <tr>
@@ -81,7 +39,7 @@ function on_update(row){
                 <tbody>
                     <? foreach ($acount_rows as $a_row) { ?>
                     <tr>
-                        <td> <input type='checkbox' name="account_idx[]" value="<?echo $a_row['account_idx'];?>" onclick="on_update(this)" > </td>
+                        <td> <input type='checkbox' name="account_idx[]" value="<?echo $a_row['account_idx'];?>" > </td>
 						<td><?echo $a_row['account_date'];?></td>
 						 <td>
                             <? foreach ($ac_rows as $ac_row) { 
@@ -97,10 +55,16 @@ function on_update(row){
                         </td>
 						<td><? echo $a_row['savings_yn'];?></td>
 						<td><? echo $a_row['loan_yn'];?></td>
-                        <td><input type='text' name="memo[]" value="<?echo $a_row['memo'];?>"></td>
+                        <td><?echo $a_row['memo'];?></td>
                     </tr>
                     <?}?>
                 </tbody>
             </table>
-            <a href="javascript://" onclick="data_save('c_s_form')">저장</a>
+			<a href="javascript://" onclick="data_del('a_form','a_del')">삭제</a>
         </form>
+		<script>
+function data_save(formName) {
+    const form = document.forms[formName]; // 폼 이름으로 선택
+        form.submit(); // submit 함수 호출
+}
+</script>
