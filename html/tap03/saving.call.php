@@ -18,6 +18,7 @@ if($smode =='s_save'){//지출분야
 						'start_date' => $start_date[$i],
 						'end_date' => $end_date[$i],
 						'one_price' => $one_price[$i],
+						'total_price' =>$total_price[$i],
 						'use_yn' => $use_yn[$i]
 						),
 					'savings_idx='.$s_idx
@@ -36,6 +37,7 @@ if($smode =='s_save'){//지출분야
 				'start_date' => $add_start_date,
 				'end_date' => $add_end_date,
 				'one_price' => $add_one_price,
+				'total_price' =>$add_total_price,
 				'use_yn' => $add_use_yn
 				)
 		);

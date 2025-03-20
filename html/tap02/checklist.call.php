@@ -4,7 +4,7 @@
 $check_date = date('Y-m-d H:i:s');
 
 //체크리스트
-$sql ="select check_idx,account_category_idx,title,default_price from acbook_checklist ";
+$sql ="select check_idx,account_category_idx,title,default_price from acbook_checklist where ifnull(use_yn,'y') != 'n'";
 $check_rows = $objdb->fetchAllRows($sql);
 
 print_r($_POST);
@@ -49,7 +49,7 @@ if($smode =='c_s_update'){
 		//echo $a_idxs;exit;
 		$rowsDeleted = $objdb->deleteRow('acbook_checklist_sub', 'check_sub_idx in ('.$c_s_idxs.')');
 	}
-   //header("Location: ./checklist_main.php");
+   header("Location: ./checklist_main.php");
 	$pdo = null; //DB작업종료
     exit();
 ?>

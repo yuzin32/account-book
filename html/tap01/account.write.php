@@ -1,6 +1,11 @@
 <?
 include_once "/demoyujin/www/account_book/html/include/head.php";  
 
+
+
+//지불수단 리스트
+$sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn from acbook_payment";
+$pay_rows = $objdb->fetchAllRows($sql);
 ?>
 <script>
 function get_save_month(){
@@ -22,7 +27,7 @@ function get_save_month(){
 <input name='smode' value='a_save' >
 <input type='hidden' name="month" id='month'value="<?echo $main_month;?>">	
 <input type='hidden' name="nyear" id='nyear' value="<?echo $main_year;?>">	
-    <table class="ac_write">
+    <table >
         <tbody>
             <tr>
                 <th><label for="type">지출/수입:</label></th>

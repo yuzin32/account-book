@@ -45,7 +45,26 @@ if($smode =='a_save'){//지출분야
 
 		$objdb->insertRow('acbook_account',$insert_into	);
 	}
-
+	//각 결제수단 잔액 갱신
+	/*$sql="select price from acbook_payment where payment_idx=".$payment_idx;
+	$row = $objdb->fetchRow($sql);
+	echo $sql.'<br>';
+	if($account_type==0){ $total_price=$row['payment_price']-$price; }else{ $total_price=$row['payment_price']+$price; }
+	echo $total_price;
+	$objdb->updateRow(
+	'acbook_payment', array( 'price' => $total_price),
+	'payment_idx='.$payment_idx
+	);
+	if($savings_yn=='y'){
+	//적금 잔액 갱신
+	$sql="select total_price from acbook_savings where savings_idx=".$savings_idx;
+	$row = $objdb->fetchRow($sql);
+	$total_price = $row['total_price']+$price;
+		$objdb->updateRow(
+		'acbook_savings', array( 'total_price' => $total_price),
+		'savings_idx='.$savings_idx
+		);
+	}*/
 }else if($smode == 'a_del'){//삭제
 	$a_idxs= implode(',',$account_idx);
 	//echo $a_idxs;exit;

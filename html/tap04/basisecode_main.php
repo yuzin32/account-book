@@ -9,11 +9,11 @@ $sql ="select systemcode_idx,systemcode_value,systemcode_name from acbook_system
 $bank_rows = $objdb->fetchAllRows($sql);
 
 //은행
-$sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn from acbook_payment";
+$sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn,price from acbook_payment";
 $pay_rows = $objdb->fetchAllRows($sql);
 
 //체크리스트
-$sql ="select check_idx,account_category_idx,title,memo,write_date,default_price from acbook_checklist";
+$sql ="select check_idx,account_category_idx,title,memo,write_date,default_price,use_yn  from acbook_checklist ";
 $check_rows = $objdb->fetchAllRows($sql);
 
 
@@ -62,6 +62,14 @@ function on_update(row){
           }
       });
 }
+function ondisplay(row){
+	var row = document.getElementById(row);
+    if (row.style.display === "none" || row.style.display === "") {
+        row.style.display = "table-row"; // 보이기
+    } else {
+        row.style.display = "none"; // 숨기기
+    }
+}
 </script>
 <body>
 	<header>
@@ -103,7 +111,7 @@ function on_update(row){
 						<td > <input type='text' name="account_category_name[]" value="<?echo $ac_row['account_category_name'];?>" disabled>
 						<a href="javascript://" onclick="on_update(this)">수정</a>
 						</td>
-						<td><input type='checkbox' name="statistics_use[]" value="y" <?if($ac_row['statistics_use']=='y')echo 'checked'?> disabled></td>
+						<td><input type='checkbox' name="statistics_use[]" value="y" <?checked_on('y',$ac_row['statistics_use']);?> disabled></td>
 					</tr>
 					<?}?>
 
@@ -137,6 +145,7 @@ function on_update(row){
 						<th>결제수단</th>
 						<th>은행명</th>
 						<th>매개</th>
+						<th>잔여금액</th>
 						<th>사용여부</th>
 					</tr>
 				</thead>
@@ -161,6 +170,8 @@ function on_update(row){
                 			<option value="<?echo $p_k;?>" <?selected_on($p_k,$p_row['payment_type']);?> ><?echo $p_v;?></option>
                 			<?}?>
                         </td>
+						<td><input type='text' name="price[]" value="<? echo $p_row['price']; ?>" disabled>
+						
 						<td><input type='checkbox' name="use_yn[]" value="y" <?if($p_row['use_yn']=='y')echo 'checked'?> disabled></td>
 						</tr>
 					<?}?>
@@ -168,6 +179,7 @@ function on_update(row){
 				</tbody>
 			</table>
 			결제수단명 : <input type='text' name="add_payment_name" >
+			잔여금액: <input type='text' name="add_price" >
 			은행명:
 			<select name="add_bank_idx" >
 			<option value="">은행을 선택하세요</option>
@@ -239,28 +251,51 @@ function on_update(row){
                         <th>지출분야</th>
 						<th>기본금액</th>
                         <th>메모</th>
+						<th>사용안함</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <? foreach ($check_rows as $c_row) { ?>
+                    <? foreach ($check_rows as $c_row) { 
+						if($c_row['use_yn']!='n'){ 
+					?>
                     <tr>
                         <td><input type='checkbox' name="check_idx[]" value="<?echo $c_row['check_idx'];?>"></td>
-                        <td><input type='text' name="title" value="<?echo $c_row['title'];?>" disabled> 
+                        <td><input type='text' name="title[]" value="<?echo $c_row['title'];?>" disabled> 
 						<a href="javascript://" onclick="on_update(this)">수정</a>
 						</td>
-                        <td><select name="account_category_idx" id="account_category_idx" disabled>
+                        <td><select name="account_category_idx[]" id="account_category_idx" disabled>
                             <option value="">지출분야를 선택하세요</option>
                             <? foreach ($ac_rows as $ac_row) { ?>
                             <option value="<?echo $ac_row['account_category_idx']?>" <?selected_on($ac_row['account_category_idx'],$c_row['account_category_idx']);?>><?echo $ac_row['account_category_name']?></option>
                             <?}?>
                             </select>
                         </td>
-						<td><input type='text' name="default_price" value="<?echo $c_row['default_price'];?>" disabled></td>
-                        <td><input type='text' name="memo" value="<?echo $c_row['memo'];?>" disabled></td>
+						<td><input type='text' name="default_price[]" value="<?echo $c_row['default_price'];?>" disabled></td>
+                        <td><input type='text' name="memo[]" value="<?echo $c_row['memo'];?>" disabled></td>
+						<td><input type='checkbox' name="use_yn[]" value="n" disabled></td>
                     </tr>
-                    <?}?>
+                    <?}else{?>
+                    <tr style="display:none" id='check_hind'>
+                        <td><input type='checkbox' name="check_idx[]" value="<?echo $c_row['check_idx'];?>"></td>
+                        <td><input type='text' name="title[]" value="<?echo $c_row['title'];?>" disabled> 
+						<a href="javascript://" onclick="on_update(this)">수정</a>
+						</td>
+                        <td><select name="account_category_idx[]" id="account_category_idx" disabled>
+                            <option value="">지출분야를 선택하세요</option>
+                            <? foreach ($ac_rows as $ac_row) { ?>
+                            <option value="<?echo $ac_row['account_category_idx']?>" <?selected_on($ac_row['account_category_idx'],$c_row['account_category_idx']);?>><?echo $ac_row['account_category_name']?></option>
+                            <?}?>
+                            </select>
+                        </td>
+						<td><input type='text' name="default_price[]" value="<?echo $c_row['default_price'];?>" disabled></td>
+                        <td><input type='text' name="memo[]" value="<?echo $c_row['memo'];?>" disabled></td>
+						<td><input type='checkbox' name="use_yn[]" value="n" <?checked_on('n',$c_row['use_yn']);?> disabled></td>
+                    </tr>
+					<?}
+				}?>
                 </tbody>
             </table>
+			.  
             내용 : <input type='text' name="add_title" >
             지출분야 : <select name="add_account_category_idx" id="add_account_category_idx">
                 <option value="">지출분야를 선택하세요</option>
@@ -272,6 +307,9 @@ function on_update(row){
             메모 :  <input type='text' name="add_memo" >
             <a href="javascript://" onclick="data_save('check_form')">저장</a>
             <a href="javascript://" onclick="data_del('check_form','check_del')">삭제</a>
+			<br>*사용안함체크 후 저장하시면 숨김처리 됩니다
+			<a href="javascript://" onclick="ondisplay('check_hind')">숨김/보기</a>
+			
         </form>
         </div>
         <!-- 체크리스트 저장폼 종료  -->

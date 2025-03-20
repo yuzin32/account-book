@@ -10,11 +10,11 @@ $sql ="select systemcode_idx,systemcode_value,systemcode_name from acbook_system
 $bank_rows = $objdb->fetchAllRows($sql);
 
 //지불수단 리스트
-$sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn from acbook_payment";
+$sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn,price  from acbook_payment";
 $pay_rows = $objdb->fetchAllRows($sql);
 
 //적금 리스트
-$sql =" select savings_idx,savings_name from acbook_savings";
+$sql =" select savings_idx,savings_name,total_price  from acbook_savings";
 $s_rows = $objdb->fetchAllRows($sql);
 
 /*---검색값 없을 시 현재 년도와 월 가져오기---*/
@@ -35,10 +35,6 @@ $lastDayOfMonth = date('t', $firstDayOfMonth);
 
 // 첫날의 요일 (0: 일요일, 6: 토요일)
 $startDayOfWeek = date('w', $firstDayOfMonth);
-
-$start_year = 1999;
-$end_year = date("Y")+1;
-
 
 ?>
 <script>
@@ -63,10 +59,11 @@ function data_del(formName,smode) {
     <!-- 탭 내용 -->
     <div class="tab-content">
 	<div class="cal-part">
-
-		<!--캘린더 -->
+		<div class="cal-box2">
+			<?include "/demoyujin/www/account_book/html/tap01/search_tmp.php"?>
+		</div>
+<!-- 		캘린더
 		<div class="cal-box">
-
 			<table class="ac_write" border='1' cellspacing='0' cellpadding='5'>
 				<?php
 				echo "<tr><th colspan='7'>{$main_year}년 {$main_month}월</th></tr>";
@@ -78,7 +75,7 @@ function data_del(formName,smode) {
 					for ($i = 0; $i < $startDayOfWeek; $i++) {
 						echo "<td></td>";
 					}
-
+		
 					// 날짜 채우기
 					for ($day = 1; $day <= $lastDayOfMonth; $day++) {
 						// 해당 날짜 출력
@@ -89,7 +86,7 @@ function data_del(formName,smode) {
 							echo "</tr><tr>";
 						}
 					}
-
+		
 					// 마지막 주 빈 칸 채우기
 					$endDayOfWeek = ($startDayOfWeek + $lastDayOfMonth) % 7;
 					if ($endDayOfWeek != 0) {
@@ -99,59 +96,19 @@ function data_del(formName,smode) {
 					}?>
 				</tr>
 			</table>
-
+		</div> -->
+		<div class="cal-box">현재 재정상태
+		<?include "/demoyujin/www/account_book/html/tap01/payment_total.php"?>
 		</div>
 		<!-- 작성폼 --> 
-		<div class="cal-box">
+		<div class="cal-box cal_list2">
 			<?include "/demoyujin/www/account_book/html/tap01/account.write.php"?>
 		</div>
 		<!-- 지출리스트  --> 
-		<div class="cal-box2">
-
-			
-					<!-- 검색 -->
-		<form name="search_form" method="POST" >
-		<!-- 월검색 클릭하면 날짜검색이 안되야 하고 날짜 검색 클릭하면 월검색이 안되어야 함 해당 javascript넣기 -->
-			<select name="search_nyaer">
-				<?for($y=$start_year; $y<=$end_year; $y++){?>
-				<option value="<?echo $y?>" <?if($search_nyaer==$y)echo 'selected';?> ><?echo $y?>
-				<?}?>
-			</select>
-			<select name="search_month">
-			<option value="" >전체</option>
-			<?for($m=1; $m<=12; $m++){?>
-				<option value="<?echo $m;?>" <?selected_on($search_month,$m);?>><?echo $m;?>월
-				<?}?>
-			</select>
-			<select name="search_day">
-			<option value="" >전체</option>
-				<?for($d=1; $d<=30; $d++){?>
-				<option value="<?echo $d?>" <?if($search_day==$d)echo 'selected';?> ><?echo $d?>
-				<?}?>
-			</select>
-			<select name="account_type" id="account_type">
-				<option value="0" <? selected_on(0,$account_type);?>>지출</option>
-				<option value="1" <? selected_on(1,$account_type);?>>수입</option>
-			</select>
-			<select name="search_payment_idx" id="search_payment_idx">
-				<option value="">결제수단</option>
-				<? foreach ($pay_rows as $p_row) { ?>
-					<option value="<?echo $p_row['payment_idx']?>" <?selected_on($p_row['payment_idx'],$search_payment_idx)?>><?echo $p_row['payment_name']?></option>
-				<?}?>
-			</select>
-			<select name="search_account_category_idx" id="search_account_category_idx">
-			<option value="">지출분야</option>
-			<? foreach ($ac_rows as $ac_row) { ?>
-			<option value="<?echo $ac_row['account_category_idx']?>" <? selected_on($ac_row['account_category_idx'],$search_account_category_idx);?>><?echo $ac_row['account_category_name']?></option>
-			<?}?>
-			</select>
-			<a href="javascript://" onclick="data_save('search_form')">검색</a>
-			<!-- 검색 끝 -->
-		</form>
-			<div class="cal_list_box">
+		<div class="cal-box2 cal_list">
 			<?$search_mode='today'?>
 			<?include "/demoyujin/www/account_book/html/tap01/account.list.php"?>
-			</div>
+
 		</div>
 
 

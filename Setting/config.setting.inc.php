@@ -7,6 +7,9 @@
 $charset = 'utf8';
 $charsetajax = 'utf-8';
 
+$start_year = 1999;
+$end_year = date("Y")+1;
+
 //짧은 환경변수를 지원하지 않는다면
 if (isset($HTTP_POST_VARS) && !isset($_POST))
 {

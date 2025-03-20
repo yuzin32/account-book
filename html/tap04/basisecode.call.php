@@ -90,7 +90,8 @@ if($smode =='ac_save'){//지출분야
 					'payment_name' => $payment_name[$i],
 					'bank_idx' => $bank_idx[$i],
 					'payment_type' => $payment_type[$i],
-					'use_yn'=>$use_yn[$i]
+					'use_yn'=>$use_yn[$i],
+				'price'=>$price[$i]
 				),
 				'payment_idx='.$p_idx
 			);
@@ -111,6 +112,7 @@ if($smode =='ac_save'){//지출분야
 				'payment_name' => $add_payment_name,
 				'bank_idx' => $add_bank_idx,
 				'payment_type' => $add_payment_type,
+			'price'=>$add_price,
 				'use_yn'=>$add_use_yn
 			)
 		);
@@ -125,18 +127,23 @@ if($smode =='ac_save'){//지출분야
 }else if($smode =='check_save'){
 	if(!empty($check_idx)){//업데이트
 		$write_date = date('Y-m-d H:i:s');
+		
+		$i=0;
 		foreach($check_idx as $c_idx){
+			if($use_yn[$i]!='n')$use_yn[$i]='y';//2025-03-11추가 :안쓰는 체크리스트 숨김처리
 			$objdb->updateRow(
 				'acbook_checklist',
 				 array(
-					'account_category_idx' => $account_category_idx,
-					'title' => $title,
-					'memo' => $memo,
-					'default_price' => $default_price,
-					'write_date'=>$write_date
+					'account_category_idx' => $account_category_idx[$i],
+					'title' => $title[$i],
+					'memo' => $memo[$i],
+					'default_price' => $default_price[$i],
+					'write_date'=>$write_date,
+					'use_yn'=>$use_yn[$i]
 				),
 				'check_idx='.$c_idx
-			);	
+			);
+			$i++;
 		}
 	}else{//생성
 		//은행

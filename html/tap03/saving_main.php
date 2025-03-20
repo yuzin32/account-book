@@ -1,7 +1,7 @@
 <? include_once "/demoyujin/www/account_book/html/include/head.php";
 $tap_code=03;
 //적금
-$sql = "select savings_idx,savings_name,bank_idx,DATE_FORMAT(start_date, '%Y-%m-%d') start_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,use_yn,one_price from acbook_savings";
+$sql = "select savings_idx,savings_name,bank_idx,DATE_FORMAT(start_date, '%Y-%m-%d') start_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,use_yn,one_price,total_price from acbook_savings";
 $saving_rows = $objdb->fetchAllRows($sql);
 
 //은행
@@ -21,32 +21,35 @@ function data_del(formName,smode) {
 function on_update(row){
 	 const tr = row.closest('tr');
 	 const inputs = tr.querySelectorAll('input');
+	 const selects = tr.querySelectorAll('select');
+	 
+     var check_yn='y'
 
-	 inputs.forEach(input => {
         // readonly 속성 제거
-
-		input.removeAttribute('disabled');
+ inputs.forEach(input => {
         // 체크박스인 경우 체크 상태로 변경
-        if (input.type === 'checkbox' && input.name=='account_category_idx[]') {
+        if (input.type === 'checkbox' && input.name.slice(-5)=='idx[]'){
 			if(input.checked == false){
-
 				input.checked = true;
-				const input_news = document.querySelectorAll('.input-new');
-				 input_news.forEach(input_new => {
-					// readoinput_newly 속성 추가
-					input_new.setAttribute('disabled', true);
-				  });
+                check_yn='n';
 			}else{
-				input.setAttribute('disabled');
-				input.checked = false;
-				const input_news = document.querySelectorAll('.input-new');
-				 input_news.forEach(input_new => {
-					// readoinput_newly 속성 추가
-					input_new.setAttribute('disabled', false);
-				  });
-
-			}
+                input.checked = false;
+            }
         }
+      });
+      inputs.forEach(input => {
+          if( check_yn=='n'){
+              input.removeAttribute('disabled');
+          }else if(check_yn=='y'){
+              input.setAttribute('disabled', 'true');
+          }
+      });
+	  selects.forEach(select => {
+          if( check_yn=='n'){
+              select.removeAttribute('disabled');
+          }else if(check_yn=='y'){
+              select.setAttribute('disabled', 'true');
+          }
       });
 }
 </script>
@@ -84,13 +87,15 @@ function on_update(row){
 				<? foreach ($saving_rows as $s_row) { ?>
 					<tr>
 						<td><input type='checkbox' name="savings_idx[]" value="<?echo $s_row['savings_idx'];?>"></td>
-                        <td><input type='text' name="savings_name[]" value="<?echo $s_row['savings_name'];?>" disabled></td>
+                        <td>
+						<input type='text' name="savings_name[]" value="<?echo $s_row['savings_name'];?>" disabled>
+						<a href="javascript://" onclick="on_update(this)">수정</a>
+						</td>
                         <td><input type='text' name="one_price[]" value="<?echo $s_row['one_price'];?>" disabled></td>
-                        <td></td>
+                        <td><input type='text' name="total_price[]" value="<?echo $s_row['total_price'];?>" disabled></td>
                         <td><input type='date' name="start_date[]" value="<?echo $s_row['start_date'];?>" disabled></td>
                         <td><input type='date' name="end_date[]" value="<?echo $s_row['end_date'];?>" disabled></td>
-                        <td><input type='checkbox' name="use_yn[]" value="<?echo $s_row['use_yn'];?>"></td>
-                        <td><a href="javascript://" onclick="on_update(this)">수정</a></td>
+                        <td><input type='checkbox' name="use_yn[]" value="<?echo $s_row['use_yn'];?>"disabled <?checked_on('y',$s_row['use_yn']);?>></td>
                     </tr>
 					<?}?>
 
@@ -106,7 +111,7 @@ function on_update(row){
 				</select>
 				<br>
 				1회 적금액 : <input type='text' name="add_one_price" value="" class="put">
-				총적금액 : <input type='text' name="" value="" class="put">
+				총적금액 : <input type='text' name="add_total_price" value="" class="put">
 				<br>
 				시작일 : <input type="date" name="add_start_date" id="start_date" required>
 				종료일 : <input type="date" name="add_end_date" id="end_date" required>

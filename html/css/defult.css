@@ -137,7 +137,7 @@ input[readonly] {
 /*------------------------------------------------------*/
 /*tap01*/
 /* 지출입력폼 스타일 */
-.ac_write table {
+.cal_list2 table {
   width: 100%; /* 테이블 너비를 부모에 맞춤 */
   border-collapse: collapse;
   margin: 20px 0;
@@ -145,46 +145,48 @@ input[readonly] {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.ac_write thead {
+.cal_list2 thead {
   background-color: #50bcdf; /* 헤더 배경색 */
   color: #ffffff; /* 헤더 텍스트 색상 */
 }
 
-.ac_write th, .ac_write td {
+.cal_list2 th, .cal_list2 td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #dddddd;
 }
 
-.ac_write th {
+.cal_list2 th {
   font-weight: bold;
   background-color: #e6f5fc;
 }
-
-.ac_write tbody tr:hover {
+.cal_list2 tbody tr:hover {
   background-color: #c6e9f5; /* 행 호버 효과 */
 }
 
-.cal_list_box {
+.cal_list {
  border: 1px;
 
 }
 /* 지출  스타일 */
-.cal_list_box table {
+.cal_list table {
   width: 100%; /* 테이블 너비를 부모에 맞춤 */
   border-collapse: collapse;
   margin: 20px 0;
   font-size: 1em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.cal_list_box th, .code_box td {
+.cal_list th, .code_box td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #dddddd;
 }
-.cal_list_box th {
+.cal_list th {
   font-weight: bold;
   background-color: #e6f5fc;
+}
+.cal_list tbody td:hover {
+  background-color: #c6e9f5; /* 행 호버 효과 */
 }
 /*------------------------------------------------------*/
 
