@@ -17,7 +17,7 @@ if(!empty($search_account_category_idx)){$wherey .=" and account_category_idx=".
 $sql ="select account_idx,account_type,account_category_idx,title,price,savings_idx,savings_yn,loan_yn,loan_type,loan_complete,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo
 from acbook_account where account_idx >= 0".$wherey." order by account_date desc limit ".$pagesize." OFFSET ".$page_no;
 
-$acount_rows = $objdb->fetchAllRows($sql);
+$acount_list_rows = $objdb->fetchAllRows($sql);
 
 $sql="select count(*) cnt from acbook_account where account_idx >= 0".$wherey;
 $acount =  $objdb-> fetchRow($sql);
@@ -39,10 +39,11 @@ echo "<a href='".$_self."?&page_box=".($page_box+1)."&page_no=".(($page_no_size*
 }
 /*적금 ,  채무 관련 코딩 필요*/
 ?>
-<script>
-</script>
+
         <form name="a_form" action="/account_book/html/tap01/account.call.php"  method="POST" >
-		<input type='hidden' name="smode" id='smode' value="">		
+		<input type='hidden' name="smode" id='smode' value="">
+		<a href="javascript://" onclick="data_del('a_form','a_del')">삭제</a>
+		<a href="javascript://" onclick="data_up('a_form','a_upda')">수정</a>
            <table>
                 <thead>
                     <tr>
@@ -62,7 +63,7 @@ echo "<a href='".$_self."?&page_box=".($page_box+1)."&page_no=".(($page_no_size*
 
                     <? $no=1;
 						$no=$no+($page_no*$pagesize);
-						foreach ($acount_rows as $a_row) { 
+						foreach ($acount_list_rows as $a_row) { 
 							?>
                     <tr>
                         <td> <input type='checkbox' name="account_idx[]" value="<?echo $a_row['account_idx'];?>" > </td>
@@ -73,7 +74,8 @@ echo "<a href='".$_self."?&page_box=".($page_box+1)."&page_no=".(($page_no_size*
 								if($ac_row['account_category_idx']== $a_row['account_category_idx']) echo $ac_row['account_category_name'];
 							}?>
                         </td>
-                        <td><?echo $a_row['title'];?></td>
+                        <td><a href="./calender_main.php?smode=updatemode&account_idx=<?echo $a_row['account_idx'];?>">
+								<?echo $a_row['title'];?></a></td>
 						<td><?echo $a_row['price'];?>원</td>
 						 <td>
                             <? foreach ($pay_rows as $p_row) { 
@@ -88,5 +90,5 @@ echo "<a href='".$_self."?&page_box=".($page_box+1)."&page_no=".(($page_no_size*
 					}?>
                 </tbody>
             </table>
-			<a href="javascript://" onclick="data_del('a_form','a_del')">삭제</a>
+			
         </form>

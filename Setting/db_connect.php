@@ -78,7 +78,7 @@ function fetchRow($sql) {
 		try {
 			$stmt = $pdo->prepare($sql);// SQL문을 준비. 자리표시자를 사용하여 보안을 강화.
 			$stmt->execute(array_values($data));//데이터를 바인딩하고 쿼리를 실행.
-			return $pdo->lastInsertId(); // 마지막 삽입된 ID 반환
+			return $sql; // 마지막 삽입된 ID 반환 $pdo->lastInsertId();
 		} catch (PDOException $e) {
 			die("Error inserting row: " . $e->getMessage());
 		}
@@ -91,7 +91,7 @@ function fetchRow($sql) {
 		try {
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array_values($data));
-			return $stmt->rowCount(); // 변경된 행 수 반환
+			return  $sql;// 변경된 행 수 반환$stmt->rowCount();
 		} catch (PDOException $e) {
 			die("Error updating row: " . $e->getMessage());
 		}
@@ -103,7 +103,7 @@ function fetchRow($sql) {
 		try {
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute();
-			return $stmt->rowCount(); // 삭제된 행 수 반환
+			return $sql;  // 삭제된 행 수 반환 $stmt->rowCount();
 		} catch (PDOException $e) {
 			die("Error deleting row: " . $e->getMessage());
 		}

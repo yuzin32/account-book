@@ -7,5 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>기본 HTML 템플릿</title>
 	<link rel="stylesheet" href="/account_book/html/css/defult.css"/>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 

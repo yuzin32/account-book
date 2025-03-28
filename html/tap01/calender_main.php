@@ -39,6 +39,7 @@ $startDayOfWeek = date('w', $firstDayOfMonth);
 ?>
 <script>
 function data_save(formName) {
+	  $('form[name="' + formName + '"] #smode').val('a_save');
     const form = document.forms[formName]; // 폼 이름으로 선택
         form.submit(); // submit 함수 호출
 }

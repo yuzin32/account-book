@@ -1,8 +1,17 @@
 <?
+print_r($_POST);
+if(empty($search_nyear))$search_nyear=date('Y');
+if(empty($search_month))$search_month=date('m');
+$wherey="";
+if(isset($search_nyear)||!empty($search_nyear))$wherey.=" and a.nyear=".$search_nyear;
+if(isset($search_month)||!empty($search_month))$wherey.=" and a.month=".$search_month;
+/*if(isset($search_payment_idx)||!empty($search_payment_idx))$wherey.=" and payment_idx=".$search_payment_idx;*/
 //월별 지출합계
-$sql ="select sum(price) ac_price,(select account_category_name from acbook_account_category where account_category_idx= a.account_category_idx ) category_name
-from acbook_account a where account_idx >= 0 group by account_category_idx order by ac_price desc";
+$sql ="select sum(price) ac_price,c.account_category_name category_name
+from acbook_account a LEFT JOIN acbook_account_category c ON a.account_category_idx = c.account_category_idx
+where a.account_type = 0 ".$wherey." group by a.account_category_idx order by ac_price desc";
 $ac_total_rows = $objdb->fetchAllRows($sql);
+//echo $sql;
 ?>
 
 <!DOCTYPE html>
