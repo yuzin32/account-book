@@ -1,6 +1,6 @@
 
 					<!-- 검색 -->
-		<form name="search_form" method="POST" >
+		<form name="search_form" method="POST" action="calender_main.php">
 		<!-- 월검색 클릭하면 날짜검색이 안되야 하고 날짜 검색 클릭하면 월검색이 안되어야 함 해당 javascript넣기 -->
 			<select name="search_nyaer">
 				<?for($y=$start_year; $y<=$end_year; $y++){?>
@@ -10,13 +10,13 @@
 			<select name="search_month">
 			<option value="" >전체</option>
 			<?for($m=1; $m<=12; $m++){?>
-				<option value="<?echo $m;?>" <?selected_on($search_month,$m);?>><?echo $m;?>월
+				<option value="<?echo $m;?>" <?selected_on($search_month,sprintf('%02d', $m));?>><?echo sprintf('%02d', $m);?>월
 				<?}?>
 			</select>
 			<select name="search_day">
 			<option value="" >전체</option>
 				<?for($d=1; $d<=30; $d++){?>
-				<option value="<?echo $d?>" <?if($search_day==$d)echo 'selected';?> ><?echo $d?>
+				<option value="<?echo $d?>" <?selected_on($search_day,sprintf('%02d', $d));?> ><?echo sprintf('%02d', $d)?>
 				<?}?>
 			</select>
 			<select name="account_type" id="account_type">

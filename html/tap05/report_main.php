@@ -1,6 +1,8 @@
 <? include_once "/demoyujin/www/account_book/html/include/head.php"; ?>
 <?
-
+//지출종류리스트
+$sql = "select account_category_idx,account_category_name,statistics_use from acbook_account_category where account_type=0";
+$ac_rows = $objdb->fetchAllRows($sql);
 //지불수단 리스트
 $sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn,price from acbook_payment";
 $pay_rows = $objdb->fetchAllRows($sql);

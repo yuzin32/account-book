@@ -11,7 +11,7 @@ $sql ="select sum(price) ac_price,c.account_category_name category_name
 from acbook_account a LEFT JOIN acbook_account_category c ON a.account_category_idx = c.account_category_idx
 where a.account_type = 0 ".$wherey." group by a.account_category_idx order by ac_price desc";
 $ac_total_rows = $objdb->fetchAllRows($sql);
-//echo $sql;
+echo $sql;
 ?>
 
 <!DOCTYPE html>

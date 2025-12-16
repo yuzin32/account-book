@@ -24,7 +24,7 @@ if($smode =='c_s_update'){
 		}
 }else if($smode =='c_s_save'){//생성
 		foreach($check_rows as $c_row){
-			$sql = "select count(check_sub_idx) c_cnt from acbook_checklist_sub where month=$month and nyear=$nyear and check_idx=".$c_row['check_idx'];
+			$sql = "select count(check_sub_idx) c_cnt from acbook_checklist_sub where nmonth=$month and nyear=$nyear and check_idx=".$c_row['check_idx'];
 			$c_cnt = $objdb->fetchRow($sql);
 
 			if($c_cnt!=0){
@@ -37,7 +37,7 @@ if($smode =='c_s_update'){
 						'check_sub_idx' =>  $row['max_check_sub_idx'],
 						'check_idx' => $c_row['check_idx'],
 						'complete' => 'n',
-						'month' => $month,
+						'nmonth' => $month,
 						'nyear' => $nyear,
 						'check_date'=>$check_date
 					)

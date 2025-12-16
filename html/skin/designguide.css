@@ -1,0 +1,15 @@
+@charset "UTF-8"
+
+.designguide{width:100%; min-height:100vh; height:100%; background:#eeffff;}
+.designguide div.fixed{background:var(--color-main01); color:#fff; position:fixed; top:0; left:0; width:22%; height:100vh; padding:2rem;}
+.designguide div.fixed p.top-title{font-family:var(--fs-bold); font-size:1.5rem;}
+.designguide div.fixed ul.sect-list{margin-top:3rem;}
+.designguide div.fixed ul.sect-list li{border-bottom:1px solid rgba(255,255,255,0.2);}
+.designguide div.fixed ul.sect-list li:last-child{border-bottom:0;}
+.designguide div.fixed ul.sect-list li a{width:100%; padding:0.8rem 0; display:block; font-size:1.125rem;}
+
+.designguide div.contents{width:calc(100% - 22%); margin:0 0 0 auto; padding:2.25rem;}
+.designguide div.contents section.sect{}
+.designguide div.contents section.sect p.sect-tit{font-size:1.5rem; font-family:var(--fs-bold);}
+.designguide div.contents section.sect div.sect-con{border:2px solid #aaa; padding:2rem; margin-top:1rem;}
+.designguide div.contents section.sect div.sect-con div.copy-box{background:#efefef; padding:0.5rem 2rem; margin-top:1rem;}

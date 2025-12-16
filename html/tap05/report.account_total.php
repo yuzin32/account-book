@@ -11,7 +11,7 @@ if(!empty($search_account_category_idx))$wherey .=" and account_category_idx=".$
 
 //월별 지출합계
 $sql ="select sum(price) m_price,month
-from acbook_account where account_idx >= 0".$wherey." group by month order by account_date desc";
+from acbook_account a where account_idx >= 0".$wherey." and a.account_type = 0 group by month order by account_date desc";
 $acount_m_rows = $objdb->fetchAllRows($sql);
 /*적금 ,  채무 관련 코딩 필요*/
 ?>

@@ -31,12 +31,15 @@ function get_save_month(){
 }
 </script>
 
+<a href="./account.excel.php?updatemode=search" target="_blank" >엑셀업로드 <a/>
 <form name="a_w_form" action="account.call.php" method="POST">
 <input type='hidden' name='smode' id="smode" value='<?=$smode?>' >
 <input type='hidden' name="month" id='month'value="<?echo $main_month;?>">	
 <input type='hidden' name="nyear" id='nyear' value="<?echo $main_year;?>">
 <input type='hidden' name="account_idx" id='account_idx' value="<?=isset($a_row['account_idx'])?$a_row['account_idx']:''?>">
 <input type='hidden' name="account_type" id='account_type' value="<?echo $account_type?>"><?echo $vSystem_account_type[$account_type]?>
+
+ 
     <table >
         <tbody>
             <tr>

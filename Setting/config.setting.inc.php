@@ -213,14 +213,12 @@ $_member_fileupload_folder = $_file_upload_folder . "/member/"; //회원정보 �
 $_popup_fileupload_folder = $_file_upload_folder . "/popup/"; //팝업파일 폴더
 $_htmlarea_fileupload_folder = $_file_upload_folder . "/htmlarea/"; //웹에디터 업로드
 $_excel_fileupload_folder = $_file_upload_folder . "/excel/"; //엑셀 업로드
-$_course_fileupload_folder = $_file_upload_folder . "/course/"; //강의계획서 업로드
 
 $_open_upload_url = "/upload/";
 $_htmlarea_fileupload_url = $_open_upload_url."/htmlarea/"; //웹에디터 주소
 $_member_upload_url = $_open_upload_url."/member/"; //회원정보 폴더
 $_popup_upload_url = $_open_upload_url."popup/"; //팝업파일 폴더
 $_excel_upload_url = $_open_upload_url . "/excel/"; //엑셀 폴더
-$_course_upload_url = $_open_upload_url . "/course/"; //강의계획서 폴더
 $_popup_html_url = $_popup_upload_url; 
 //게시판소스 폴더
 $_bbs_syspath = $_syspath."/lms_bbs/";

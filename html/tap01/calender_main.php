@@ -1,8 +1,13 @@
 <? include_once "/demoyujin/www/account_book/html/include/head.php"; ?>
 <?
+/*로그인확인*/
+if(empty($_SESSION['userid'])){
+	header("Location:/account_book/html/main/");
+}
+
 //지출수입 구분값 
 if(empty($account_type))$account_type=0;
-//지출수단 리스트
+//지출종류리스트
 $sql = "select account_category_idx,account_category_name,statistics_use from acbook_account_category where account_type=".$account_type;
 $ac_rows = $objdb->fetchAllRows($sql);
 //은행 리스트
@@ -22,9 +27,9 @@ if(!isset($search_nyaer))$search_nyaer='';
 if(!isset($search_month))$search_month='';
 if(!isset($search_day))$search_day='';
 if(!empty($search_nyaer)){ $main_year=$search_nyaer; }else{$main_year=date('Y'); $search_nyaer=date('Y'); }
-if(!empty($search_month)){ $main_month=$search_month; }else{$main_month=date('m'); }
-if(!empty($search_day)){ $main_day=$search_day; }else{$main_day=date('d'); }
-echo $search_nyaer.'/'.$search_month.'/'.$search_day;
+if(!empty($search_month)){ $main_month=sprintf('%02d', $search_month); }else{$main_month=date('m'); }
+if(!empty($search_day)){ $main_day=sprintf('%02d', $search_day); }else{$main_day=date('d'); }
+//echo $search_nyaer.'/'.$search_month.'/'.$search_day;
 
 $account_date=$main_year.'-'.$main_month.'-'.$main_day;
 /*-------------------------------*/
@@ -63,9 +68,8 @@ function data_del(formName,smode) {
 		<div class="cal-box2">
 			<?include "/demoyujin/www/account_book/html/tap01/search_tmp.php"?>
 		</div>
-<!-- 		캘린더
 		<div class="cal-box">
-			<table class="ac_write" border='1' cellspacing='0' cellpadding='5'>
+			<table class="ac_write" cellspacing='0' cellpadding='5'>
 				<?php
 				echo "<tr><th colspan='7'>{$main_year}년 {$main_month}월</th></tr>";
 				echo "<tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr>";
@@ -97,9 +101,6 @@ function data_del(formName,smode) {
 					}?>
 				</tr>
 			</table>
-		</div> -->
-		<div class="cal-box">현재 재정상태
-		<?include "/demoyujin/www/account_book/html/tap01/payment_total.php"?>
 		</div>
 		<!-- 작성폼 --> 
 		<div class="cal-box cal_list2">

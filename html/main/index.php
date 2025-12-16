@@ -1,48 +1,40 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>기본 HTML 템플릿</title>
-    <style>
-        /* 기본 스타일 */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #f4f4f4;
-            color: #fff;
-            padding: 1em;
-            text-align: center;
-        }
-        main {
-            margin: 20px;
-        }
-        footer {
-            background-color:#f4f4f4;
-            color: #fff;
-            padding: 1em;
-            text-align: center;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
+<? include_once "/demoyujin/www/account_book/html/include/head.php"; ?>
+<?if(!empty($_GET['smode'])){
+$smode='join';
+}else{ $smode='login';}
+
+?>
+<script>
+function data_save(formName) {
+    const form = document.forms[formName]; // 폼 이름으로 선택
+        form.submit(); // submit 함수 호출
+}
+</script>
+
+<title>login</title>
 </head>
 <body>
-
-
-	<main>
-	 <? 
-	 include "calender.php"; ?>
-	</main>
-
-
+    <div class="wrap">
+        <div class="login-wrap">
+            <div class="outer-bg"></div>
+            <div class="inner-box">
+                <div class="content-nav">
+                    <ul class="nav-list">
+                        <li <?if($smode == 'login'){?>class="on"<?}?>><a href="/account_book/html/main/">로그인</a></li>
+                        <li <?if($smode == 'join'){?>class="on"<?}?>><a href="/account_book/html/main/?smode=join">회원가입</a></li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <?if($smode=='join'){
+                    include "join.php";
+                    }else{
+                    include "login.php";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-
-
 </html>
+

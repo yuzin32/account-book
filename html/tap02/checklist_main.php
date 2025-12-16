@@ -12,8 +12,8 @@ if(empty($serch_month)){$month=date("m");}else{$month=$serch_month;}
 //echo $serch_nyear .'//'.$serch_month;
 
 //체크리스트_데이터
-$sql ="select t.check_sub_idx,t.complete,t.month,t.nyear,t.check_idx,t.check_date,t.memo,t2.title,t2.account_category_idx,t2.default_price
-from acbook_checklist_sub t left join acbook_checklist t2 on t2.check_idx=t.check_idx where t.nyear=".$nyear." and t.month=".$month;
+$sql ="select t.check_sub_idx,t.complete,t.nmonth,t.nyear,t.check_idx,t.check_date,t.memo,t2.title,t2.account_category_idx,t2.default_price
+from acbook_checklist_sub t left join acbook_checklist t2 on t2.check_idx=t.check_idx where t.nyear=".$nyear." and t.nmonth=".$month;
 $check_sub_rows = $objdb->fetchAllRows($sql);
 
 

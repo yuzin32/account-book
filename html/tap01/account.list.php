@@ -8,15 +8,15 @@ if(empty($page_box))$page_box=0;
 $wherey='';
 if(!empty($search_nyaer)){$wherey .=" and nyear=".$search_nyaer;}else{ $search_nyaer =""; }
 if(!empty($search_month)){$wherey .=" and month=".$search_month;}else{ $search_month =""; }
-if(!empty($search_day)){$wherey .=" and account_date=".$account_date;}else{$account_date =""; }
+if(!empty($search_day)){$wherey .=" and account_date='".$account_date."'";}else{$account_date =""; }
 if(isset($account_type)){$wherey .=" and account_type=".$account_type;}else{$account_type ="";}
 if(!empty($search_payment_idx)){$wherey .=" and payment_idx=".$search_payment_idx;}else{$search_payment_idx ="";}
 if(!empty($search_account_category_idx)){$wherey .=" and account_category_idx=".$search_account_category_idx;}else{$search_account_category_idx ="";}
 
 //지출내역
 $sql ="select account_idx,account_type,account_category_idx,title,price,savings_idx,savings_yn,loan_yn,loan_type,loan_complete,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo
-from acbook_account where account_idx >= 0".$wherey." order by account_date desc limit ".$pagesize." OFFSET ".$page_no;
-
+from acbook_account where account_idx >= 0 and account_category_idx!=12 ".$wherey." order by account_date desc ";//limit ".$pagesize." OFFSET ".$page_no
+echo $sql;
 $acount_list_rows = $objdb->fetchAllRows($sql);
 
 $sql="select count(*) cnt from acbook_account where account_idx >= 0".$wherey;
@@ -65,7 +65,7 @@ echo "<a href='".$_self."?&page_box=".($page_box+1)."&page_no=".(($page_no_size*
 						$no=$no+($page_no*$pagesize);
 						foreach ($acount_list_rows as $a_row) { 
 							?>
-                    <tr>
+                    <tr>account_type : <?echo$a_row['account_type']?>
                         <td> <input type='checkbox' name="account_idx[]" value="<?echo $a_row['account_idx'];?>" > </td>
 						<td><? echo $no?> </td>
 						<td><?echo $a_row['account_date'];?></td>

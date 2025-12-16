@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+/* 로그인 */
+div.login-wrap{width:100%; height:100vh; position:relative; overflow:hidden;}
+div.login-wrap div.outer-bg{width:100%; height:100%; background:url("../img/login_bg.png")center/cover no-repeat;}
+div.login-wrap div.inner-box{position:absolute; top:48%; left:50%; transform:translate(-50%, -50%); background:rgba(255,255,255,0.5); padding:2rem; border-radius:1.5rem; width:640px; box-shadow:0 0 30px rgba(67,141,2,0.6);}
+div.login-wrap div.inner-box div.content-nav{position:absolute; top:15%; right:-4rem;}
+div.login-wrap div.inner-box div.content-nav ul.nav-list{}
+div.login-wrap div.inner-box div.content-nav ul.nav-list li{width:6rem; text-align:center; font-size:1.1rem; font-family:var(--fs-medium); background:var(--color-main01); color:#fff; margin-top:0.3rem; border:2px solid #333; border-radius:0 0.5rem 0.5rem 0; border-left:0; position:relative;}
+div.login-wrap div.inner-box div.content-nav ul.nav-list li:before{content:''; display:none; width:3px; height:100%; background:#fff; position:absolute; top:0; left:-2px;}
+div.login-wrap div.inner-box div.content-nav ul.nav-list li a{padding:0.5rem 0.6rem; width:100%;}
+div.login-wrap div.inner-box div.content-nav ul.nav-list li.on{background:#fff; color:#333;}
+div.login-wrap div.inner-box div.content-nav ul.nav-list li.on:before{display:block;}
+div.login-wrap div.inner-box div.content-nav ul.nav-list li.on a{}
+div.login-wrap div.inner-box div.content-box{background:#fff; border:2px solid #333; border-radius:0.8rem; padding:3rem; width:100%;}
+div.login-wrap div.inner-box div.content-box section.login-top{margin-bottom:2rem; position:relative;}
+div.login-wrap div.inner-box div.content-box section.login-top:after{content:''; display:block; width:3rem; height:3rem; background:url("../img/ico_clover.png")center/contain no-repeat; position:absolute; top:50%; right:0; transform:translateY(-50%);}
+div.login-wrap div.inner-box div.content-box section.login-top p.txt01{font-family:var(--fs-bold); font-size:1.8rem;}
+div.login-wrap div.inner-box div.content-box section.login-top p.txt02{opacity:.5;}
+div.login-wrap div.inner-box div.content-box section.login-inp{}
+div.login-wrap div.inner-box div.content-box section.login-inp input{padding:0 1rem; width:100%; font-size:1rem; height:3.2rem; margin-bottom:0.5rem;}
+div.login-wrap div.inner-box div.content-box section.login-inp div.inp-pw a.pw-eyes{top:43%;}
+div.login-wrap div.inner-box div.content-box section.login-inp .login-btn{font-size:1.35rem; letter-spacing:6px; display:block; width:100%; height:3.5rem; line-height:calc(3.5rem - 2px); border:2px solid var(--color-main01); background:var(--color-main01); margin-top:1rem; color:#fff; text-align:center; font-family:var(--fs-bold); border-radius:500px; transition:0.3s;}
+div.login-wrap div.inner-box div.content-box section.login-inp .error-text{color:red; font-size:0.9rem; position:relative; padding-left:1.3rem;}
+div.login-wrap div.inner-box div.content-box section.login-inp .error-text:before{content:'!'; display:block; width:1rem; height:1rem; line-height:1rem; border-radius:500px; text-align:center; background:red; color:#fff; font-size:10px; position:absolute; top:3.5px; left:0; font-family:var(--fs-bold);}
+@media(hover:hover){
+    div.login-wrap div.inner-box div.content-nav ul.nav-list li:not(.on):hover{filter:saturate(0.7);}
+    div.login-wrap div.inner-box div.content-box section.login-inp .login-btn:hover{color:var(--color-main01); background:#fff; border:2px solid var(--color-main01);}
+}
