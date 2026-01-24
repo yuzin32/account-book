@@ -52,6 +52,12 @@ label.c-input.ci-radio:hover input[type="radio"] + div.ci-show{background:#efefe
 label.c-input.ci-radio input[type="radio"]:checked + div.ci-show{background:var(--color-main01); border-color:var(--color-main01);}
 label.c-input.ci-radio input[type="radio"]:checked + div.ci-show:after{display:block;}
 
+label.c-input.ci-check input[type="checkbox"] + div.ci-show{width:1rem; height:1rem; display:inline-block; border-radius:3px; border:1px solid #ddd; transition:0.3s; background:#fff; position:absolute; top:50%; left:0; transform:translateY(-50%);}
+label.c-input.ci-check input[type="checkbox"] + div.ci-show:after{content:''; display:none; width:22%; height:50%; background:transparent; border-bottom:2px solid #fff; border-right:2px solid #fff; position:absolute; top:40%; left:45%; transform:translate(-50%, -50%) rotate(45deg);}
+label.c-input.ci-check:hover input[type="checkbox"] + div.ci-show{background:#efefef; border-color:#ccc;}
+label.c-input.ci-check input[type="checkbox"]:checked + div.ci-show{background:var(--color-main01); border-color:var(--color-main01);}
+label.c-input.ci-check input[type="checkbox"]:checked + div.ci-show:after{display:block;}
+
 /* toggle switch */
 label.c-togglelabel {width: 2.8rem; height: 1.6rem; display:block; position: relative; border-radius: 500px; background:#ccc; cursor: pointer;}
 label.c-togglelabel .c-togglebutton{width: 1.125rem; height: 1.125rem; position: absolute; top: 50%; left:0.25rem; transform: translateY(-50%); border-radius: 50%; background:#fff;}
@@ -78,6 +84,8 @@ div.btn-center-wrap{display:flex; align-items:center; justify-content:center; ga
 .c-btn.confirm{background:#333; color:#fff;}
 .c-btn.cancel{border-color:#a0a0a0; color:#888;}
 .c-btn.save{border-color:var(--color-main01); color:#fff; background:var(--color-main01);}
+.c-btn.underline{text-decoration:underline; padding:0; border:0; border-radius:0; color:var(--color-main03); transition:0.25s;}
+.c-btn.underline:hover{color:blue;}
 
 .r-btn{font-size:0.8rem; padding:0.3rem 0.7rem; display:inline-block; color:#fff; background:#333; border-radius:50px;}
 .r-btn.delete{background:#ea4d4d; color:#fff;}
@@ -133,6 +141,8 @@ div.search-area div.search-lab span.lab{display:block; font-size:0.8rem; color:#
 div.search-area div.search-lab select,
 div.search-area div.search-lab input{width:100%; min-width:10rem; height:var(--input-height--sm); font-size:1em;}
 div.search-area div.search-lab a.search-btn{display:inline-block; padding:0 1rem;  height:var(--input-height--sm); line-height:var(--input-height--sm); background:var(--color-grayblue); color:#fff; font-family:var(--fs-medium); border-radius:500px;}
+div.search-area div.search-lab label.c-input{height:var(--input-height--sm); line-height:var(--input-height--sm);}
+div.search-area div.search-lab label.c-input input[type="checkbox"]{width:0; min-width:0; height:0; position:absolute; top:0; left:0;}
 
 
 /* modal */
@@ -167,6 +177,9 @@ div.modal-wrap div.modal-list-area div.list-table-wrap table.list-table thead th
 div.modal-wrap div.modal-list-area div.list-table-wrap table.list-table tbody tr{border-bottom:1px solid #ddd;}
 
 /* modal > form */
+div.modal-wrap div.form-wrap{padding:1rem;}
+div.modal-wrap div.form-wrap div.form{margin-bottom:1rem;}
+div.modal-wrap div.form-wrap div.form div.con input[type="text"]{width:100%;}
 div.modal-wrap div.form-wrap.div-col2{display:flex; flex-wrap:wrap;}
 div.modal-wrap div.form-wrap.div-col2 div.form{width:50%;}
 div.modal-wrap div.form-wrap.div-col2 div.form div.tit{}

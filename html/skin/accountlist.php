@@ -100,6 +100,49 @@
                 <div class="content-box">
                     <!-- *** 내부영역 START *** -->
                    <div class="accountlist-wrap">
+                        <!-- 2026/01/07 추가 -- 검색영역 start -->
+                        <div class="search-area">
+                            <div class="search-lab">
+                                <span class="lab">날짜</span>
+                                <input type="date">
+                            </div>
+                            <div class="search-lab">
+                                <span class="lab">카테고리</span>
+                                <select>
+                                    <option>::선택::</otption>
+                                    <option>카테고리</otption>
+                                    <option>카테고리</otption>
+                                </select>
+                            </div>
+                            <div class="search-lab">
+                                <span class="lab">내역</span>
+                                <input type="text">
+                            </div>
+                            <div class="search-lab">
+                                <span class="lab">결제수단</span>
+                                <select>
+                                    <option>::선택::</otption>
+                                    <option>결제수단</otption>
+                                    <option>결제수단</otption>
+                                </select>
+                            </div>
+                            <div class="search-lab">
+                                <span class="lab">적금/채무</span>
+                                <label class="c-input ci-check">
+                                    <input type="checkbox"> 적금
+                                    <div class="ci-show"></div>
+                                </label>
+                                <label class="c-input  ci-check">
+                                    <input type="checkbox"> 채무
+                                    <div class="ci-show"></div>
+                                </label>
+                            </div>
+                            <div class="search-lab">
+                                <a class="search-btn" href="#none">검색</a>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- 검색영역 end -->
                     <div class="total-list-wrap">
                                 <div class="table-util">
                                     <div class="u-left">
@@ -326,6 +369,12 @@
             <div class="m-body">
                 <!-- 입력폼 start -->
                 <div class="form-wrap div-col2">
+                    <div class="form">
+                        <div class="tit">날짜</div>
+                        <div class="con">
+                            <input type="date">
+                        </div>
+                    </div>
                     <div class="form">
                         <div class="tit">지출/수입</div>
                         <div class="con">

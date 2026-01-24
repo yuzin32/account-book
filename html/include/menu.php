@@ -2,12 +2,13 @@
      $tap_name =basename($_SERVER['PHP_SELF']);
 
      $menus = [
-        "home.php"       => ["label" => "Home",       "url" => "/account_book/html/new_tap01/home.php"],
+        "home.php"       => ["label" => "Home",      "url" => "/account_book/html/new_tap01/home.php"],
         "calendar.php"   => ["label" => "캘린더",     "url" => "/account_book/html/new_tap02/calendar.php"],
-        "checklist.php"  => ["label" => "체크리스트", "url" => "/account_book/html/new_tap03/checklist.php"],
-        "saving_loan.php"=> ["label" => "적금/채무",  "url" => "/account_book/html/new_tap04/saving_loan.php"],
-        "basisecode.php" => ["label" => "코드관리",   "url" => "/account_book/html/new_tap05/basisecode.php"],
-        "report.php"     => ["label" => "통계",       "url" => "/account_book/html/new_tap06/report.php"],
+        "accountlist.php"  => ["label" => "가계부",   "url" => "/account_book/html/new_tap03/accountlist.php"],
+        "checklist.php"  => ["label" => "체크리스트", "url" => "/account_book/html/new_tap04/checklist.php"],
+        "saving.php"=> ["label" => "적금/채무",  "url" => "/account_book/html/new_tap05/saving.php"],
+        "basisecode.php" => ["label" => "코드관리",   "url" => "/account_book/html/new_tap06/basisecode.php"],
+        "report.php"     => ["label" => "통계",      "url" => "/account_book/html/new_tap07/report.php"],
     ];
      ?>
     

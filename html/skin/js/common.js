@@ -66,6 +66,10 @@ $(document).ready(function(){
 
             // 처음 1페이지 데이터 로드 해당페이지에 데이터로드함수생성
             loadPage(1);
+        }else if(target == "account-updat"){
+            var idx = $(this).data('idx');
+            //상세페이지 로드 해당페이지에 데이터로드함수생성
+            dataload(idx);
         }
 
     });

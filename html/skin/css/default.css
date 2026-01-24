@@ -58,7 +58,7 @@ footer, header, hgroup, menu, nav, section {
 html{
     font-size:15px;
     font-family: 'Paperlogy-Regular',sans-serif;
-    line-height:1.6;
+    line-height:1.5;
 }
 ol, ul {
     list-style: none;
@@ -79,4 +79,8 @@ a{
     display: inline-block;
     text-decoration: unset;
     color:inherit;
+}
+
+@media screen and (max-width:1280px){
+    html{font-size:14px;}
 }

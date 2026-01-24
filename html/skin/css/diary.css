@@ -3,10 +3,10 @@
 /* 레이아웃 */
 div.diary-wrap{position:relative; width:100%; height:100vh;}
 div.diary-wrap div.outer-bg{position:absolute; top:0; left:0; background:url("../img/login_bg.png")center/cover no-repeat; width:100%; height:100%;}
-div.diary-wrap div.inner-box{width:1280px; height:90vh; position:absolute; top:50%; left:4%; transform:translateY(-50%); background:rgba(255,255,255,0.5); padding:2rem; border-radius:1.5rem; box-shadow:0 0 30px rgba(67,141,2,0.6);}
-div.diary-wrap div.inner-box div.content-nav{position:absolute; top:10%; right:-4.5rem;}
+div.diary-wrap div.inner-box{width:1200px; max-width:75%; height:90vh; position:absolute; top:50%; left:4%; transform:translateY(-50%); background:rgba(255,255,255,0.5); padding:2rem; border-radius:1.5rem; box-shadow:0 0 30px rgba(67,141,2,0.6);}
+div.diary-wrap div.inner-box div.content-nav{position:absolute; top:8%; right:-4rem;}
 div.diary-wrap div.inner-box div.content-nav ul.nav-list{}
-div.diary-wrap div.inner-box div.content-nav ul.nav-list li{width:6.5rem; text-align:center; font-family:var(--fs-medium); font-size:1.1rem; color:#fff; background:var(--color-main01); margin-top:0.3rem; border:2px solid #333; border-radius:0 0.5rem 0.5rem 0; border-left:0; position:relative;}
+div.diary-wrap div.inner-box div.content-nav ul.nav-list li{width:6rem; text-align:center; font-family:var(--fs-medium); font-size:1rem; color:#fff; background:var(--color-main01); margin-top:0.3rem; border:2px solid #333; border-radius:0 0.5rem 0.5rem 0; border-left:0; position:relative;}
 div.diary-wrap div.inner-box div.content-nav ul.nav-list li:before{content:''; display:none; width:3px; height:100%; background:#fff; position:absolute; top:0; left:-2px;}
 div.diary-wrap div.inner-box div.content-nav ul.nav-list li a{display:block; width:100%; height:100%; padding:0.6rem 0;}
 div.diary-wrap div.inner-box div.content-nav ul.nav-list li.on{background:#fff; color:#333; }
@@ -44,6 +44,33 @@ div.side-wallet div.side-box div.inner ul.cash-list li.cash-red span.l-tit{color
 div.side-wallet div.side-box div.inner ul.cash-list li.cash-red span.r-num{}
 div.side-wallet div.side-btn{display:flex; align-items:center; gap:0.5rem; justify-content: center; margin-top:1rem;}
 div.side-wallet div.side-btn > a{border:2px solid #333; border-radius:50px; padding:0.2rem 0.8rem; background:rgba(255,255,255,0.5); text-align:center; font-family:var(--fs-medium);}
+
+@media screen and (max-width:1600px){
+    div.diary-wrap div.inner-box{left:2%;}
+}
+@media screen and (max-width:1440px){
+    div.diary-wrap div.inner-box{padding:1.5rem;}
+    div.diary-wrap div.inner-box div.content-box{padding:1.25rem;}
+    div.diary-wrap div.inner-box div.content-nav{top:5%;}
+    div.diary-wrap div.inner-box div.content-nav ul.nav-list li{width:5.5rem;}
+
+    div.side-wallet{top:5%; left:83%; width:16%;}
+    div.side-wallet div.side-box div.inner{padding:0.8rem;}
+    div.side-wallet div.side-box div.inner ul.cash-list li{font-size:0.9rem; padding:0.4rem 0.6rem;}
+    
+
+}
+@media screen and (max-width:1280px){}
+@media screen and (max-width:1100px){
+    div.diary-wrap{padding:1.5%; height:auto;}
+    div.diary-wrap div.inner-box{position:relative; top:unset; left:unset; transform:unset; width:calc(100% - 4rem); max-width:unset;}
+
+    div.side-wallet{position:relative; top:unset; left:unset; transform:unset; width:100%;}
+    div.side-wallet div.side-box div.inner div.date-txt{display:flex; align-items:center; gap:0.25rem;}
+    div.side-wallet div.side-box div.inner ul.cash-list{display:flex; justify-content: space-between;}
+    div.side-wallet div.side-box div.inner ul.cash-list li{width:24%; margin:0;}
+}
+@media screen and (max-width:960px){}
 
 /******************************
 
@@ -150,6 +177,13 @@ div.chklist-wrap div.chklist-month ul.month-list li.on a span.state{background:r
 
 div.home-wrap{display:flex; justify-content:space-between;}
 div.home-wrap section.home-sect.sect01{width:25%;}
+div.home-wrap section.home-sect.sect02{width:72%;}
+div.home-wrap section.home-sect div.sect-tit{display:flex; align-items:center; justify-content: space-between; margin-bottom:1rem;}
+div.home-wrap section.home-sect div.sect-tit h4{font-size:1rem;}
+div.home-wrap section.home-sect div.sect-tit a.btn-more{display:inline-block; font-size:12px; position:relative; padding-right:1.5rem;}
+div.home-wrap section.home-sect div.sect-tit a.btn-more:after{content:''; display:block; width:1rem; height:1rem; background:url("../img/ico_arrow_right.svg")center/70% auto no-repeat; position:absolute; top:50%; right:4px; opacity:.5; transform:translatey(-50%); transition:0.3s;}
+div.home-wrap section.home-sect div.sect-tit a.btn-more:hover:after{right:0; opacity:1;}
+
 
 div.home-wrap div.home-profile{font-size:0.9rem;}
 div.home-wrap div.home-profile div.profile-img{width:100%; height:15rem; border:2px solid #fff; border-radius:1rem; overflow:hidden;}
@@ -184,3 +218,23 @@ div.home-wrap div.mini-calendar div.cal-week ul.week-list li.red{color:var(--col
 div.home-wrap div.mini-calendar div.cal-week ul.day-list{display:flex; font-size:0.9em; flex-wrap:wrap; gap:1rem 0;}
 div.home-wrap div.mini-calendar div.cal-week ul.day-list li{width:calc(100% / 7); text-align:center;}
 div.home-wrap div.mini-calendar div.cal-week ul.day-list li.today{color:var(--color-main01); font-family:var(--fs-bold); border-radius:1rem; background:var(--color-main01-10);}
+
+div.home-wrap div.recent-account{margin-top:3rem;}
+div.home-wrap div.recent-account ul.recent-list{display:flex; align-items: flex-start; justify-content: space-between; margin-bottom:0.5rem;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item{width:24%; border:1px solid #ddd; background:#f5f5f5; padding:0.8rem; border-radius:0.8rem;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-top span.sort{font-size:11px; background:#333; color:#fff; padding:0.15rem 0.5rem; box-shadow:0 5px 10px rgba(0,0,0,0.2); border-radius:5px;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-top span.sort.sort01{background-color:var(--color-main01); color:#fff;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-top span.sort.sort02{background-color:var(--color-main02); color:#fff;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-top span.date{font-size:11px; color:#ccc;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-mid{}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-mid p.num{text-align:right; font-family:Var(--fs-bold);}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-mid p.num span.won{font-family:Var(--fs-regular);}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-bot{}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-bot p.txt{display:flex; flex-wrap:wrap; justify-content:space-between; margin-top:0.4rem; padding-top:0.4rem; font-size:0.8rem; border-top:1px dashed #ddd;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-bot p.txt span.txt-t{color:#888;}
+div.home-wrap div.recent-account ul.recent-list li.rl-item div.item-bot p.txt span.txt-c{}
+
+div.home-wrap div.category-chart{margin-top:0.5rem;}
+div.home-wrap div.category-chart div.chart-area{}
+div.home-wrap div.category-chart div.chart-area #homeChart{width:100%; height:350px; max-height:40vh;}

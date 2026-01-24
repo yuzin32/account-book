@@ -12,8 +12,10 @@
     <!-- jquery + jquery UI -->
     <script src="/account_book/html/skin/js/jquery-3.7.1.min.js"></script>
     <script src="/account_book/html/skin/js/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- custom jquery -->
     <script src="/account_book/html/skin/js/common.js"></script>
+
     <title>가계부 - home</title>
 </head>
 <body>
@@ -189,6 +191,113 @@
                             <!-- 미니 캘린더 end -->
                         </section>
                         <!-- 왼쪽 섹션 end -->
+
+                        <!-- 오른쪽 섹션 start -->
+                        <section class="home-sect sect02">
+                            <!-- 차트 start -->
+                            <div class="category-chart">
+                                <div class="sect-tit">
+                                    <h4>[ 2025년 00월 ] 카테고리별 지출</h4>
+                                    <a class="btn-more" href="#none">MORE VIEW</a>
+                                </div>
+                                <div class="chart-area">
+                                    <canvas id="homeChart"></canvas>
+                                </div>
+                            </div>
+                            <!-- 차트 end -->
+
+                            <!-- 최근 가계부 start -->
+                            <div class="recent-account">
+                                <div class="sect-tit">
+                                    <h4>최근 가계부 내역</h4>
+                                    <a class="btn-more" href="https://demoyujin.mycafe24.com/account_book/html/skin/accountlist.php">MORE VIEW</a>
+                                </div>
+                                <ul class="recent-list">
+                                    <li class="rl-item">
+                                        <div class="item-top">
+                                            <!-- 수입 : sort01 / 지출 : sort02 / 적금채무 : sort만 있어도 됌 -->
+                                            <span class="sort sort01">수입</span>
+                                            <span class="date">2025.00.00</span>
+                                        </div>
+                                        <div class="item-mid">
+                                            <p class="num">30,000 <span class="won">원</span></p>
+                                        </div>
+                                        <div class="item-bot">
+                                            <p class="txt">
+                                                <span class="txt-t">카테고리</span>
+                                                <span class="txt-c">월급</span>
+                                            </p>
+                                            <p class="txt">
+                                                <span class="txt-t">결제수단</span>
+                                                <span class="txt-c">우리은행</span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="rl-item">
+                                        <div class="item-top">
+                                            <!-- 수입 : sort01 / 지출 : sort02 / 적금채무 : sort만 있어도 됌 -->
+                                            <span class="sort sort02">지출</span>
+                                            <span class="date">2025.00.00</span>
+                                        </div>
+                                        <div class="item-mid">
+                                            <p class="num">30,000 <span class="won">원</span></p>
+                                        </div>
+                                        <div class="item-bot">
+                                            <p class="txt">
+                                                <span class="txt-t">카테고리</span>
+                                                <span class="txt-c">간식</span>
+                                            </p>
+                                            <p class="txt">
+                                                <span class="txt-t">결제수단</span>
+                                                <span class="txt-c">네이버페이</span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="rl-item">
+                                        <div class="item-top">
+                                            <!-- 수입 : sort01 / 지출 : sort02 / 적금채무 : sort만 있어도 됌 -->
+                                            <span class="sort">적금</span>
+                                            <span class="date">2025.00.00</span>
+                                        </div>
+                                        <div class="item-mid">
+                                            <p class="num">300,000 <span class="won">원</span></p>
+                                        </div>
+                                        <div class="item-bot">
+                                            <p class="txt">
+                                                <span class="txt-t">카테고리</span>
+                                                <span class="txt-c">적금</span>
+                                            </p>
+                                            <p class="txt">
+                                                <span class="txt-t">결제수단</span>
+                                                <span class="txt-c">우리은행</span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="rl-item">
+                                        <div class="item-top">
+                                            <!-- 수입 : sort01 / 지출 : sort02 / 적금채무 : sort만 있어도 됌 -->
+                                            <span class="sort">채무</span>
+                                            <span class="date">2025.00.00</span>
+                                        </div>
+                                        <div class="item-mid">
+                                            <p class="num">300,000 <span class="won">원</span></p>
+                                        </div>
+                                        <div class="item-bot">
+                                            <p class="txt">
+                                                <span class="txt-t">카테고리</span>
+                                                <span class="txt-c">채무</span>
+                                            </p>
+                                            <p class="txt">
+                                                <span class="txt-t">결제수단</span>
+                                                <span class="txt-c">우리은행</span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- 최근 가계부 end -->
+                        </section>
+                        <!-- 오른쪽 섹션 end -->
                     </div>
                     <!-- home END -->
                 </div>
@@ -196,6 +305,70 @@
         </div>
         <!-- ***** 다이어리 레이아웃 END ***** -->
     </div>
+
+
+    <!-- 차트 script -->
+    <script>
+Chart.defaults.font.family = "'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#444';
+
+window.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('homeChart').getContext('2d');
+
+  const homeChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['카테고리1', '카테고리2', '카테고리3', '카테고리4', '카테고리5'],
+      datasets: [{
+        label: '카테고리',
+        data: [120000, 190000, 150000, 220000, 180000],
+        borderWidth: 1,
+        borderColor: ['rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)',
+      'rgb(75, 192, 192)',
+      'rgb(153, 102, 255)'],
+        backgroundColor: ['rgba(255, 99, 132,0.4)',
+      'rgba(54, 162, 235,0.4)',
+      'rgba(255, 205, 86,0.4)',
+      'rgba(75, 192, 192,0.4)',
+      'rgba(153, 102, 255,0.4)'],
+        borderRadius: 3,
+        barThickness: 40
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+            display: false,
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false
+          }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            font: {
+              size: 11
+            }
+          }
+        }
+      }
+    }
+  });
+});
+</script>
+
 
 
 </body>

@@ -3,7 +3,6 @@ if(empty($_SESSION['userid'])){
 	header("Location:/account_book/html/main/");
 }?>
 <?
-if(!isset($search_nyaer))$search_nyaer='';
 if(!isset($search_month))$search_month='';
 if(!isset($search_day))$search_day='';
 if(!empty($search_nyaer)){ $main_year=$search_nyaer; }else{$main_year=date('Y'); $search_nyaer=date('Y'); }
@@ -13,11 +12,11 @@ $account_date=$main_year.'-'.$main_month.'-'.$main_day;
 /*-------------------------------*/
 //1월이면 작년12월로 나머진 전 달로
 if($main_month=='1'){ $prev_txt="search_nyaer=".($main_year-1)."&search_month=12";
-}else{ $prev_txt="search_month=".($main_month-1); }
+}else{ $prev_txt="search_nyaer=".$main_year."&search_month=".($main_month-1); }
 
 //1월이면 작년12월로 나머진 전 달로
 if($main_month=='12'){ $next_txt="search_nyaer=".($main_year+1)."&search_month=1";
-}else{ $next_txt="search_month=".($main_month+1); }
+}else{ $next_txt="search_nyaer=".$main_year."&search_month=".($main_month+1); }
 
 // 해당 월의 첫날과 마지막 날
 $firstDayOfMonth = strtotime("$main_year-$main_month-01");
@@ -199,7 +198,7 @@ $payment = select_payment_name('all');
                 var search_ac = $('#list_search_ac').val();
                 var search_p = $('#list_search_p').val();
             $.ajax({
-                url: "account_list_ajax.php",
+                url: "account_total_list_ajax.php",
                 type: "GET",
                 data: { page:page ,main_year:main_year,main_month:main_month,list_type:list_type,search_ac:search_ac,search_p:search_p},
                 success: function(response) {
