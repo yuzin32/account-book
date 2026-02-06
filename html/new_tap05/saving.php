@@ -1,8 +1,20 @@
 <? include_once "/demoyujin/www/account_book/html/include/head.php"; ?>
 <?
+$wherey="";
+if(!empty($search_savings_name)){$wherey.=" and savings_name='$search_savings_name'";}else{$search_savings_name="";}
+if(!empty($search_one_price)){$wherey.=" and one_price=$search_one_price";}else{$search_one_price="";}
+if(!empty($search_total_price)){$wherey.=" and total_price=$search_total_price";}else{$search_total_price="";}
+
+if(!empty($search_startdate)){$wherey.=" and start_date='$search_startdate'";}else{$search_startdate="";}
+if(!empty($search_end_date)){$wherey.=" and end_date='$search_end_date'";}else{$search_end_date="";}
+if(!empty($search_use_yn)){$wherey.=" and use_yn='$search_use_yn'";}else{$search_use_yn="";}
+
 //적금
-$sql = "select savings_idx,savings_name,bank_idx,DATE_FORMAT(start_date, '%Y-%m-%d') start_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,use_yn,one_price,total_price from acbook_savings";
+$sql = "select savings_idx,savings_name,bank_idx,DATE_FORMAT(start_date, '%Y-%m-%d') start_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,use_yn,one_price,total_price 
+,(select systemcode_name from acbook_systemcode where systemcode_key='bank' and systemcode_idx=s.bank_idx) bank_name
+from acbook_savings s where savings_idx>=0 ".$wherey;
 $saving_rows = $objdb->fetchAllRows($sql);
+//echo $sql;
 
 //은행
 $sql ="select systemcode_idx,systemcode_value,systemcode_name from acbook_systemcode where systemcode_key='bank'";
@@ -31,55 +43,49 @@ function data_del(formName,smode) {
                         <!-- *** 내부영역 START *** -->
                     <div class="saving-wrap">
                         <!-- 검색영역 start -->
-                        <div class="search-area">
-                            <div class="search-lab">
-                                <span class="lab">유형선택</span>
-                                <select>
-                                    <option>::선택::</otption>
-                                    <option>적금</otption>
-                                    <option>채무</otption>
-                                </select>
+                         <form name="cal_seachform" action="<?=$_self?>">
+                            <div class="search-area">
+                                <div class="search-lab">
+                                    <span class="lab">은행명</span>
+                                    <select name="serch_bank" >
+                                        <option value="">::선택::</otption>
+                                        <? foreach ($bank_rows as $b_row) { ?>
+                                        <option value="<?= $b_row['systemcode_idx'];?>" <?=selected_on($b_row['systemcode_idx'],$serch_bank)?> ><?= $b_row['systemcode_name'];?></option>
+                                        <?}?>
+                                    </select>
+                                </div>
+                                <div class="search-lab">
+                                    <span class="lab">타이틀</span>
+                                    <input type="text" name="search_savings_name" value="<?=$search_savings_name?>">
+                                </div>
+                                <div class="search-lab">
+                                    <span class="lab">1회금액</span>
+                                    <input type="text" name="search_one_price" value="<?=$search_one_price?>">
+                                </div>
+                                <div class="search-lab">
+                                    <span class="lab">총금액</span>
+                                    <input type="text" name="search_total_price" value="<?=$search_total_price?>">
+                                </div>
+                                <div class="search-lab">
+                                    <span class="lab">시작일</span>
+                                    <input type="date" name="search_startdate" value="<?=$search_startdate?>">
+                                </div>
+                                <div class="search-lab">
+                                    <span class="lab">종료일</span>
+                                    <input type="date" name="search_end_date" value="<?=$search_end_date?>">
+                                </div>
+                                <div class="search-lab">
+                                    <span class="lab">사용여부</span>
+                                    <select name="search_use_yn" <?=selected_on('y',$search_use_yn)?>>
+                                        <option value="y" <?=selected_on('y',$search_use_yn)?>>사용</otption>
+                                        <option value="n" <?=selected_on('y',$search_use_yn)?>>미사용</otption>
+                                    </select>
+                                </div>
+                                <div class="search-lab">
+                                    <a class="search-btn" href="javascript://" onclick="data_save('cal_seachform')">검색</a>
+                                </div>
                             </div>
-                            <div class="search-lab">
-                                <span class="lab">은행명</span>
-                                <select>
-                                    <option>::선택::</otption>
-                                    <option>부산은행</otption>
-                                    <option>신한은행</otption>
-                                </select>
-                            </div>
-                            <div class="search-lab">
-                                <span class="lab">타이틀</span>
-                                <input type="text">
-                            </div>
-                            <div class="search-lab">
-                                <span class="lab">1회금액</span>
-                                <input type="text">
-                            </div>
-                            <div class="search-lab">
-                                <span class="lab">총금액</span>
-                                <input type="text">
-                            </div>
-                            <div class="search-lab">
-                                <span class="lab">시작일</span>
-                                <input type="date">
-                            </div>
-                            <div class="search-lab">
-                                <span class="lab">종료일</span>
-                                <input type="date">
-                            </div>
-                            <div class="search-lab">
-                                <span class="lab">사용여부</span>
-                                <select>
-                                    <option>::선택::</otption>
-                                    <option>사용</otption>
-                                    <option>미사용</otption>
-                                </select>
-                            </div>
-                            <div class="search-lab">
-                                <a class="search-btn" href="#none">검색</a>
-                            </div>
-                        </div>
+                        </form>
                         <br>
                         <!-- 검색영역 end -->
                         <div class="table-util">
@@ -93,8 +99,8 @@ function data_del(formName,smode) {
                         </div>
                         <!-- 리스트 최대 9개 -->
                         <div class="table-wrap">
-                            <form name="s_listform" action="/account_book/html/new_tap05/saving_loan.call.php"  method="POST">
-                                <input type='hidden' name="smode" value="s_save">
+                            <form name="s_listform" action="/account_book/html/new_tap05/saving.call.php"  method="POST">
+                                <input type='hidden' name="smode" value="">
                             <table class="c-table">
                                 <thead>
                                     <tr>
@@ -115,7 +121,7 @@ function data_del(formName,smode) {
                                     <tr>
                                         <td><input type="checkbox" class="single" name="savings_idx[]" value="<?= $s_row['savings_idx'];?>"></td>
                                         <td><span class="c-lab blue --sm">적금</span></td>
-                                        <td><?= $s_row['bank_idx'];?></td>
+                                        <td><?= $s_row['bank_name'];?></td>
                                         <td><?= $s_row['savings_name'];?></td>
                                         <td><?= $s_row['one_price'];?>원</td>
                                         <td><?= $s_row['total_price'];?></td>
@@ -165,7 +171,7 @@ function data_del(formName,smode) {
                     <span class="bar"></span>
                 </a>
             </div>
-            <form name="s_saveform" action="/account_book/html/new_tap05/saving_loan.call.php"  method="POST">
+            <form name="s_saveform" action="/account_book/html/new_tap05/saving.call.php"  method="POST">
             <input type='hidden' name="smode" value="s_save">
             <div class="m-body">
                 <!-- 입력폼 start -->

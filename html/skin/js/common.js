@@ -56,6 +56,8 @@ $(document).ready(function(){
     // 모달창 열기
     $(".modal-open").click(function(){
         var target = $(this).data('modal');
+        var load = $(this).data('load');
+        var idx = $(this).data('idx');
         $("div.modal-wrap." + target).show();
 
         if(target == "total-list"){
@@ -66,12 +68,10 @@ $(document).ready(function(){
 
             // 처음 1페이지 데이터 로드 해당페이지에 데이터로드함수생성
             loadPage(1);
-        }else if(target == "account-updat"){
-            var idx = $(this).data('idx');
+        }else if(load == "load"){
             //상세페이지 로드 해당페이지에 데이터로드함수생성
             dataload(idx);
         }
-
     });
 
     
@@ -117,4 +117,31 @@ function find_maxnum(inputname) {
 
     // 전부 비어있거나 숫자 없을 경우
     return maxnum ?? 0;
+}
+
+function clearForm(formSelector) {
+    const $form = $('#'+formSelector);
+    if ($form.length === 0) {
+        console.warn('Form not found:', formSelector);
+        return;
+    }
+
+    // 모든 input / textarea 값 제거
+    $form.find('input, textarea').each(function () {
+        const type = $(this).attr('type');
+
+        if (type === 'checkbox' || type === 'radio') {
+            $(this).prop('checked', false);
+        } else {
+            $(this).val('');
+        }
+    });
+
+    // select 초기화
+    $form.find('select').prop('selectedIndex', 0);
+
+    // readonly / disabled 복구 (중요)
+    $form.find('input, textarea, select')
+         .prop('readonly', false)
+         .prop('disabled', false);
 }

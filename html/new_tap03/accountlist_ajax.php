@@ -10,11 +10,14 @@ $row = $objdb->fetchRow($sql);
 $result = [
     'account_idx'          => $row['account_idx'] ?? null,
     'account_type'         => $row['account_type'] ?? null,
+    'payment_idx'         => $row['payment_idx'] ?? null,
     'account_category_idx' => $row['account_category_idx'] ?? null,
     'title'                => $row['title'] ?? '',
     'price'                => $row['price'] ?? 0,
     'account_date'         => $row['account_date'] ?? '',
+    'savings_idx'         => $row['savings_idx'] ?? '',
     'memo'                 => $row['memo'] ?? ''
+    
 ];
 
 header('Content-Type: application/json; charset=utf-8');

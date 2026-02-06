@@ -6,8 +6,10 @@ $ac_rows = $objdb->fetchAllRows($sql);
 //결제수단
 $sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn,price from acbook_payment order by payment_idx desc";
 $pay_rows = $objdb->fetchAllRows($sql);
+//적금 리스트
+$sql =" select savings_idx,savings_name,total_price  from acbook_savings";
+$s_rows = $objdb->fetchAllRows($sql);
 
-print_r($_POST);
 
 if(empty($page_no))$page_no=0;//현재페이지번호 
 if(empty($page_no_size))$page_no_size=5;//한화면에 나오는 페이지 갯수
@@ -28,8 +30,9 @@ if(!empty($search_loan)){$wherey .=" and loan_yn='".$search_loan."'";}else{$sear
 //지출내역
 $sql ="select account_idx,account_type,account_category_idx,title,price,savings_idx,savings_yn,loan_yn,loan_type,loan_complete,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo
 from acbook_account where account_idx >= 0 and account_category_idx!=12 ".$wherey." order by account_date desc ";//limit ".$pagesize." OFFSET ".$page_no
-echo $sql;
+//echo $sql;
 $acount_list_rows = $objdb->fetchAllRows($sql);
+
 //총 로우갯수
 $sql="select count(*) cnt from acbook_account where account_idx >= 0".$wherey;
 $acount =  $objdb-> fetchRow($sql);
@@ -154,7 +157,7 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                                                 }?>
                                             </td>
                                             <td>
-                                            <a href="#none"  class="c-btn underline modal-open" data-modal="account-updat" data-idx="<?= $a_row['account_idx'];?>"><?= $a_row['title'];?></a>    
+                                            <a href="#none"  class="c-btn underline modal-open" data-modal="account-updat" data-load="load" data-idx="<?= $a_row['account_idx'];?>"><?= $a_row['title'];?></a>    
                                             <!-- <a href="./calender_main.php?smode=updatemode&account_idx=<?= $a_row['account_idx'];?>">
                                                     </a>-->
                                                     </td> 
@@ -227,11 +230,12 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
             <div class="m-body">
                 <!-- 입력폼 start -->
                 <form name="ac_saveform" action="/account_book/html/new_tap03/accountlist.call.php"  method="POST">
+                <input name="smode" type="text" value="a_save">
                 <div class="form-wrap div-col2">
                     <div class="form">
                         <div class="tit">날짜</div>
                         <div class="con">
-                            <input type="date">
+                            <input name="add_account_date" type="date">
                         </div>
                     </div>
                     <div class="form">
@@ -276,7 +280,7 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                         <div class="tit">적금</div>
                         <div class="con">
                             <select name="add_savings_idx" id="add_savings_idx">
-                                <option value="n">해당없음</option>
+                                <option value="">해당없음</option>
                                 <? foreach ($s_rows as $s_row) { ?>
                                 <option value="<?= $s_row['savings_idx']?>"><?= $s_row['savings_name']?></option>
                                 <?}?>
@@ -288,10 +292,10 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                         <div class="con"><input type="text" name="add_memo" id="add_memo"></div>
                     </div>
                     <div class="form">
-                        <div class="tit">채무</div>
+                        <div class="tit">채무(아직 개발안함)</div>
                         <div class="con">
                             <select name="add_loan_idx" id="add_loan_idx">
-                                <option value="n">해당없음</option>
+                                <option value="">해당없음</option>
                             </select>
                         </div>
                     </div>
@@ -328,11 +332,14 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
             });
             }
             function success_dataload(data) {
+                $('#up_account_idx').val(data.account_idx);
                 $('#up_account_date').val(data.account_date);
                 $('#up_account_type').val(data.account_type);
                 $('#up_account_category_idx').val(data.account_category_idx);
+                $('#up_payment_idx').val(data.payment_idx);
                 $('#up_title').val(data.title);
                 $('#up_price').val(data.price);
+                $('#up_savings_idx').val(data.savings_idx);
                 $('#up_memo').val(data.memo);
 
             }
@@ -354,6 +361,8 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
             <div class="m-body">
                 <!-- 입력폼 start -->
                 <form name="ac_updateform" action="/account_book/html/new_tap03/accountlist.call.php"  method="POST">
+                <input name="up_account_idx" id="up_account_idx" type="text" value="">
+                <input name="smode" type="text" value="a_save">
                 <div class="form-wrap div-col2">
                     <div class="form">
                         <div class="tit">날짜</div>
@@ -392,7 +401,7 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                         <div class="tit">결제수단</div>
                         <div class="con">
                             <select name="up_payment_idx" id="up_payment_idx">
-                                <option>::선택::</option>
+                                <option value="">::선택::</option>
                                     <? foreach ($pay_rows as $p_row) { ?>
                                         <option value="<?= $p_row['payment_idx']?>" ><?= $p_row['payment_name']?></option>
                                     <?}?>
@@ -403,7 +412,7 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                         <div class="tit">적금</div>
                         <div class="con">
                             <select name="up_savings_idx" id="up_savings_idx">
-                                <option value="n">해당없음</option>
+                                <option value="">해당없음</option>
                                 <? foreach ($s_rows as $s_row) { ?>
                                 <option value="<?= $s_row['savings_idx']?>"><?= $s_row['savings_name']?></option>
                                 <?}?>
@@ -418,12 +427,12 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                         <div class="tit">채무</div>
                         <div class="con">
                             <select name="up_loan_idx" id="up_loan_idx">
-                                <option value="n">해당없음</option>
+                                <option value="">해당없음</option>
                             </select>
                         </div>
                     </div>
                     <div class="btn-center-wrap">
-                        <a href="javascript://" onclick="data_save('ac_updateform');" class="c-btn save">등록</a>
+                        <a href="javascript://" onclick="data_save('ac_updateform');" class="c-btn save">수정</a>
                     </div>
                 </div>
                 </form>
