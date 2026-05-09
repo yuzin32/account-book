@@ -1,3 +1,14 @@
+<?
+$row = array(
+    'name' => '',
+    'userid' => '',
+    'email' => '',
+    'tel_mobile' => ''
+);
+if($smode=="edit"){
+	$sql="SELECT name,userid,email,tel_mobile from member  WHERE userid='{$_SESSION['userid']}'";
+	$row=$objdb->fetchRow($sql);
+}?>
 <form name="join_form" action="join_call.php" method="POST">
 <input type='hidden' name='smode' id="smode" value='<?=$smode?>' >
 
@@ -6,14 +17,14 @@
 		<div class="form">
 			<div class="tit">이름</div>
 			<div class="con">
-				<input type="text" name="name" placeholder="이름">
+				<input type="text" name="name" placeholder="이름"  value="<?=$row['name']?>">
 			</div>
 		</div>
 		<div class="form">
 			<div class="tit">아이디</div>
 			<div class="con">
 				<div class="row">
-					<input type="text" id="userid" name="userid" placeholder="아이디">
+					<input type="text" id="userid" name="userid" placeholder="아이디" value="<?=$row['userid']?>">
 					<a class="form-btn" id="id_chk" onclick="id_chk()" href="#none">중복체크</a>
 				</div>
 			</div>
@@ -37,13 +48,13 @@
 		<div class="form">
 			<div class="tit">이메일</div>
 			<div class="con">
-				<input type="text" name="email" placeholder="이메일">
+				<input type="text" name="email" placeholder="이메일" value="<?=$row['email']?>">
 			</div>
 		</div>
 		<div class="form">
 			<div class="tit">전화번호</div>
 			<div class="con">
-				<input type="text" name="tel_mobile" placeholder="전화번호">
+				<input type="text" name="tel_mobile" placeholder="전화번호" value="<?=$row['tel_mobile']?>">
 			</div>
 		</div>
 		<div class="btn-center-wrap">

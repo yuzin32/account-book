@@ -3,7 +3,7 @@ include_once  "/demoyujin/www/account_book/Setting/config.inc.php";
 
 //지출내역
 $sql ="select account_idx,account_type,account_category_idx,title,price,savings_idx,savings_yn,loan_yn,
-loan_type,loan_complete,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo
+loan_action,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo,loan_idx
 from acbook_account where account_idx = {$this_account_idx}";//limit ".$pagesize."  ".$page_no
 $row = $objdb->fetchRow($sql);
 
@@ -16,8 +16,9 @@ $result = [
     'price'                => $row['price'] ?? 0,
     'account_date'         => $row['account_date'] ?? '',
     'savings_idx'         => $row['savings_idx'] ?? '',
-    'memo'                 => $row['memo'] ?? ''
-    
+    'memo'                 => $row['memo'] ?? '',
+    'loan_idx'             =>$row['loan_idx']??'',
+    'loan_action'           =>$row['loan_action']??''
 ];
 
 header('Content-Type: application/json; charset=utf-8');

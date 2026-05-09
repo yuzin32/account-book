@@ -7,9 +7,13 @@ $ac_rows = $objdb->fetchAllRows($sql);
 $sql ="select payment_idx,payment_name,bank_idx,payment_type,use_yn,price from acbook_payment order by payment_idx desc";
 $pay_rows = $objdb->fetchAllRows($sql);
 //적금 리스트
-$sql =" select savings_idx,savings_name,total_price  from acbook_savings";
+$sql =" select savings_idx,savings_name,total_price from acbook_savings";
 $s_rows = $objdb->fetchAllRows($sql);
-
+//대출 
+$sql="select l.loan_idx,l.total_amount, case when ifnull(l.counterparty_name,'')='' then concat('[',lt.systemcode_name,']',b.systemcode_name) ELSE concat('[',lt.systemcode_name,']',l.counterparty_name) END AS loan_name 
+from acbook_loan l left join acbook_systemcode lt on lt.systemcode_key='loan_type' and lt.systemcode_value=l.loan_type 
+left join acbook_systemcode b on b.systemcode_key='bank' and b.systemcode_idx=l.bank_idx";
+$loan_rows = $objdb->fetchAllRows($sql);
 
 if(empty($page_no))$page_no=0;//현재페이지번호 
 if(empty($page_no_size))$page_no_size=5;//한화면에 나오는 페이지 갯수
@@ -28,8 +32,8 @@ if(!empty($search_loan)){$wherey .=" and loan_yn='".$search_loan."'";}else{$sear
 
 
 //지출내역
-$sql ="select account_idx,account_type,account_category_idx,title,price,savings_idx,savings_yn,loan_yn,loan_type,loan_complete,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo
-from acbook_account where account_idx >= 0 and account_category_idx!=12 ".$wherey." order by account_date desc ";//limit ".$pagesize." OFFSET ".$page_no
+$sql ="select account_idx,account_type,account_category_idx,title,price,savings_idx,savings_yn,loan_yn,payment_idx,DATE_FORMAT(account_date,'%Y-%m-%d') account_date,memo
+from acbook_account where account_idx >= 0 and account_category_idx!=12 ".$wherey." order by account_date desc ,account_idx desc";//limit ".$pagesize." OFFSET ".$page_no
 //echo $sql;
 $acount_list_rows = $objdb->fetchAllRows($sql);
 
@@ -43,12 +47,6 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
 //$qarydata="&search_nyaer=".$search_nyaer."& search_month=".$search_month."&search_payment_idx=".$search_payment_idx."&search_account_category_idx=".$search_account_category_idx."&account_type=".$account_type."&account_date".$account_date;
 
 ?>
-<script>
-    function data_save(formName) {
-    const form = document.forms[formName]; // 폼 이름으로 선택
-        form.submit(); // submit 함수 호출
-}
-</script>
 <body>
     <div class="wrap">
         <!-- ***** 다이어리 레이아웃 START ***** -->
@@ -118,14 +116,16 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                     <div class="total-list-wrap">
                                 <div class="table-util">
                                     <div class="u-left">
-                                        <a href="#none" class="r-btn delete">삭제</a>
+                                        <a href="javascript://" class="r-btn delete" onclick="data_del('a_listform','a_del')">삭제</a>
                                     </div>
                                     <div class="u-right">
                                         <!-- <a href="#none"  class="r-btn save">엑셀등록</a> -->
-                                        <a href="#none"  class="r-btn save modal-open" data-modal="account-new">등록</a>
+                                        <a href="#none"  class="r-btn save modal-open" data-modal="account-new" data-form="a_saveform" data-mode="a_save">등록</a>
                                     </div>
                                 </div>
                                 <div class="list-table">
+                                    <form name="a_listform" action="/account_book/html/new_tap03/accountlist.call.php"  method="POST">
+                                    <input type='hidden' name="smode" id="smode" value="">
                                     <!-- 한페이지에 최대 13줄 -->
                                     <table class="c-table">
                                         <thead>
@@ -157,9 +157,8 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                                                 }?>
                                             </td>
                                             <td>
-                                            <a href="#none"  class="c-btn underline modal-open" data-modal="account-updat" data-load="load" data-idx="<?= $a_row['account_idx'];?>"><?= $a_row['title'];?></a>    
-                                            <!-- <a href="./calender_main.php?smode=updatemode&account_idx=<?= $a_row['account_idx'];?>">
-                                                    </a>-->
+                                            <a href="#none"  class="c-btn underline modal-open" data-modal="account-new" data-load="load" data-form="a_saveform" data-mode="up_a_save"
+                                            data-idx="<?= $a_row['account_idx'];?>"><?= $a_row['title'];?></a>    
                                                     </td> 
                                             <td><?= $a_row['price'];?>원</td>
                                             <td>
@@ -175,34 +174,35 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                                         }?>
                                         </tbody>
                                     </table>
-                                   <!-- 페이지네이션 -->
-                                    <?
-                                    $start_page = ($page_box * $page_no_size) + 1;
-                                    $end_page   = $start_page + $page_no_size - 1;
-                                    ?>
-                                    <ul class="pagination">
-                                        <li class="arrow prev">
-                                            <?php if ($page_box > 0) { ?>
-                                                <a href="<?=$_self?>?page_box=<?=($page_box-1)?>&page_no=<?=$start_page-1?>" title="이전"></a>
-                                            <?php } ?>
-                                        </li>
-
-                                        <?php
-                                        for ($p = $start_page; $p <= $end_page; $p++) {
-                                            if($page_cnt>=$p){
+                                    <!-- 페이지네이션 -->
+                                        <?
+                                        $start_page = ($page_box * $page_no_size) + 1;
+                                        $end_page   = $start_page + $page_no_size - 1;
                                         ?>
-                                            <li <?php if ($page_no == $p) { ?>class="on"<?php } ?>>
-                                                <a href="<?=$_self?>?page_no=<?=$p?>&page_box=<?=$page_box?>">
-                                                    <?=$p?>
-                                                </a>
+                                        <ul class="pagination">
+                                            <li class="arrow prev">
+                                                <?php if ($page_box > 0) { ?>
+                                                    <a href="<?=$_self?>?page_box=<?=($page_box-1)?>&page_no=<?=$start_page-1?>" title="이전"></a>
+                                                <?php } ?>
                                             </li>
-                                        <?php } } ?>
-                                        <?php if ($page_box < $page_box_cnt) { ?>
-                                        <li class="arrow next">
-                                            <a href="<?=$_self?>?page_box=<?=($page_box+1)?>&page_no=<?=$end_page+1?>" title="다음"></a>
-                                        </li>
-                                        <?}?>
-                                                                            </ul>
+
+                                            <?php
+                                            for ($p = $start_page; $p <= $end_page; $p++) {
+                                                if($page_cnt>=$p){
+                                            ?>
+                                                <li <?php if ($page_no == $p) { ?>class="on"<?php } ?>>
+                                                    <a href="<?=$_self?>?page_no=<?=$p?>&page_box=<?=$page_box?>">
+                                                        <?=$p?>
+                                                    </a>
+                                                </li>
+                                            <?php } } ?>
+                                            <?php if ($page_box < $page_box_cnt) { ?>
+                                            <li class="arrow next">
+                                                <a href="<?=$_self?>?page_box=<?=($page_box+1)?>&page_no=<?=$end_page+1?>" title="다음"></a>
+                                            </li>
+                                            <?}?>
+                                        </ul>
+                                    </form>
                                 </div>
                             </div>
                    </div>
@@ -213,6 +213,43 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
         </div>
         <!-- ***** 다이어리 레이아웃 END ***** -->
     </div>
+<script>
+
+    // AJAX로 페이지 데이터 불러오기
+    function dataload(idx) {
+    $.ajax({
+        url: "accountlist_ajax.php",
+        type: "GET",
+        data: {this_account_idx: idx},
+        success: function(data) {
+        try {
+            console.log(data);//console.log(data.title);
+            success_dataload(data)
+        } catch (e) {
+            console.error("JSON parse error:", e);
+            console.log(data);
+        }
+        },
+        error: function() {
+        alert("데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+    });
+    }
+    function success_dataload(data) {
+        $('#add_account_idx').val(data.account_idx);
+        $('#add_account_date').val(data.account_date);
+        $('#add_account_type').val(data.account_type);
+        $('#add_account_category_idx').val(data.account_category_idx);
+        $('#add_payment_idx').val(data.payment_idx);
+        $('#add_title').val(data.title);
+        $('#add_price').val(data.price);
+        $('#add_savings_idx').val(data.savings_idx);
+        $('#add_loan_idx').val(data.loan_idx);
+        $('#add_memo').val(data.memo);
+        $('input[name="add_loan_action"][value="' + data.loan_action + '"]').prop('checked', true);
+
+    }
+</script>
   <!-- *****  모달창 START ***** -->
     <!-- 모달창 작동 jquery : /account_book/html/skin/js/common.js -->
     <div class="modal-wrap account-new" style="display:none">
@@ -229,13 +266,15 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
             </div>
             <div class="m-body">
                 <!-- 입력폼 start -->
-                <form name="ac_saveform" action="/account_book/html/new_tap03/accountlist.call.php"  method="POST">
-                <input name="smode" type="text" value="a_save">
+                <form name="a_saveform" id="a_saveform" action="/account_book/html/new_tap03/accountlist.call.php"  method="POST">
+                <input name="smode" id="smode" type="text" value="a_save">
+                <input name="add_account_idx" id="add_account_idx" type="text" value="">
+
                 <div class="form-wrap div-col2">
                     <div class="form">
                         <div class="tit">날짜</div>
                         <div class="con">
-                            <input name="add_account_date" type="date">
+                            <input name="add_account_date" id="add_account_date" type="date">
                         </div>
                     </div>
                     <div class="form">
@@ -282,7 +321,7 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                             <select name="add_savings_idx" id="add_savings_idx">
                                 <option value="">해당없음</option>
                                 <? foreach ($s_rows as $s_row) { ?>
-                                <option value="<?= $s_row['savings_idx']?>"><?= $s_row['savings_name']?></option>
+                                <option value="<?= $s_row['savings_idx']?>"><?= $s_row['savings_name'].'('.number_format($s_row['total_price']).'W)'?></option>
                                 <?}?>
                             </select>
                         </div>
@@ -292,15 +331,27 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
                         <div class="con"><input type="text" name="add_memo" id="add_memo"></div>
                     </div>
                     <div class="form">
-                        <div class="tit">채무(아직 개발안함)</div>
+                        <div class="tit">채무</div>
                         <div class="con">
                             <select name="add_loan_idx" id="add_loan_idx">
                                 <option value="">해당없음</option>
+                                <?foreach($loan_rows as $l_row){?>
+                                    <option value="<?=$l_row['loan_idx']?>"><?=$l_row['loan_name'].'('.$l_row['total_amount'].')'?></option>
+                                <?}?>
                             </select>
+                            <br>
+                                 <label class="c-input ci-radio">
+                                    <input type="radio" name="add_loan_action" value="repay">  상환 
+                                    <div class="ci-show"></div>
+                                </label>
+                                <label class="c-input ci-radio">
+                                    <input type="radio"  name="add_loan_action" value="addpay">  증액 
+                                    <div class="ci-show"></div>
+                                </label>
                         </div>
                     </div>
                     <div class="btn-center-wrap">
-                        <a href="javascript://" onclick="data_save('ac_saveform');" class="c-btn save">등록</a>
+                        <a href="javascript://" onclick="data_save('a_saveform');" class="c-btn save">등록</a>
                     </div>
                 </div>
                 </form>
@@ -310,136 +361,5 @@ $page_box_cnt=$page_cnt/$page_no_size;//페이지박스의갯수
     </div>
     <!-- ***** 모달창 END ***** -->
 
-    <script>
-            // AJAX로 페이지 데이터 불러오기
-            function dataload(idx) {
-            $.ajax({
-                url: "accountlist_ajax.php",
-                type: "GET",
-                data: {this_account_idx: idx},
-                success: function(data) {
-                try {
-                    console.log(data);//console.log(data.title);
-                    success_dataload(data)
-                } catch (e) {
-                    console.error("JSON parse error:", e);
-                    console.log(data);
-                }
-                },
-                error: function() {
-                alert("데이터를 불러오는 중 오류가 발생했습니다.");
-                }
-            });
-            }
-            function success_dataload(data) {
-                $('#up_account_idx').val(data.account_idx);
-                $('#up_account_date').val(data.account_date);
-                $('#up_account_type').val(data.account_type);
-                $('#up_account_category_idx').val(data.account_category_idx);
-                $('#up_payment_idx').val(data.payment_idx);
-                $('#up_title').val(data.title);
-                $('#up_price').val(data.price);
-                $('#up_savings_idx').val(data.savings_idx);
-                $('#up_memo').val(data.memo);
-
-            }
-         </script>
-     <!-- *****  모달창 START ***** -->
-    <!-- 모달창 작동 jquery : /account_book/html/skin/js/common.js -->
-    <div class="modal-wrap account-updat" style="display:none">
-        <div class="bg"></div>
-        <div class="modal">
-            <div class="m-head">
-                <p class="mh-label">
-                    [가계부] 수정
-                </p>
-                <a href="#none" class="modal-close" title="창닫기">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </a>
-            </div>
-            <div class="m-body">
-                <!-- 입력폼 start -->
-                <form name="ac_updateform" action="/account_book/html/new_tap03/accountlist.call.php"  method="POST">
-                <input name="up_account_idx" id="up_account_idx" type="text" value="">
-                <input name="smode" type="text" value="a_save">
-                <div class="form-wrap div-col2">
-                    <div class="form">
-                        <div class="tit">날짜</div>
-                        <div class="con">
-                            <input type="date" id="up_account_date" name="up_account_date">
-                        </div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">지출/수입</div>
-                        <div class="con">
-                            <select name="up_account_type" id='up_account_type'>
-                                <option value="0">지출</option>
-                                <option value="1">수입</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">카테고리</div>
-                        <div class="con">
-                            <select name="up_account_category_idx" id="up_account_category_idx">
-                                <? foreach ($ac_rows as $ac_row) { ?>
-                                <option value="<?= $ac_row['account_category_idx']?>"><?= $ac_row['account_category_name']?></option>
-                                <?}?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">상세내역</div>
-                        <div class="con"><input type="text" name="up_title" id="up_title"></div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">금액</div>
-                        <div class="con"><input type="text" name="up_price" id="up_price"></div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">결제수단</div>
-                        <div class="con">
-                            <select name="up_payment_idx" id="up_payment_idx">
-                                <option value="">::선택::</option>
-                                    <? foreach ($pay_rows as $p_row) { ?>
-                                        <option value="<?= $p_row['payment_idx']?>" ><?= $p_row['payment_name']?></option>
-                                    <?}?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">적금</div>
-                        <div class="con">
-                            <select name="up_savings_idx" id="up_savings_idx">
-                                <option value="">해당없음</option>
-                                <? foreach ($s_rows as $s_row) { ?>
-                                <option value="<?= $s_row['savings_idx']?>"><?= $s_row['savings_name']?></option>
-                                <?}?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">메모</div>
-                        <div class="con"><input type="text" name="up_memo" id="up_memo"></div>
-                    </div>
-                    <div class="form">
-                        <div class="tit">채무</div>
-                        <div class="con">
-                            <select name="up_loan_idx" id="up_loan_idx">
-                                <option value="">해당없음</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="btn-center-wrap">
-                        <a href="javascript://" onclick="data_save('ac_updateform');" class="c-btn save">수정</a>
-                    </div>
-                </div>
-                </form>
-               <!-- 입력폼 end -->
-            </div>
-        </div>
-    </div>
-    <!-- ***** 모달창 END ***** -->
 </body>
 </html>

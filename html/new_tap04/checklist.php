@@ -32,15 +32,6 @@ function set_new_check(formName){
 	document.getElementById('smode').value = 'c_s_save';
 	data_save(formName)
 }
-function data_save(formName) {
-    const form = document.forms[formName]; // 폼 이름으로 선택
-        form.submit(); // submit 함수 호출
-}
-function data_del(formName,smode) {
-    const form = document.forms[formName]; // 폼 이름으로 선택
-	form["smode"].value = smode;
-    form.submit(); // submit 함수 호출
-}
 function new_checklist(tableSelector) {
     const table = document.querySelector('#'+tableSelector);
 

@@ -6,40 +6,41 @@
 
 //echo $smode;exit;
 
-if($smode =='a_save'){//����о�
+if($smode =='up_a_save'){//����о�
 
-	if(!empty($up_account_idx)){
-		list($up_year, $up_month, $up_day) = explode('-', $up_account_date);
-		$up_savings_yn = (!empty(trim($up_savings_idx))) ? 'y' : 'n';
-		$up_loan_yn    = (!empty(trim($up_loan_idx))) ? 'y' : 'n';
+	if(!empty($add_account_idx)){
+		list($add_year, $add_month, $add_day) = explode('-', $add_account_date);
+		$add_savings_yn = (!empty(trim($add_savings_idx))) ? 'y' : 'n';
+		$add_loan_yn    = (!empty(trim($add_loan_idx))) ? 'y' : 'n';
 
-		if(!empty(trim($up_title))&& !empty(trim($up_price))&& !empty(trim($up_account_category_idx))&& !empty(trim($up_payment_idx))
-			&& !empty(trim($up_month))&& !empty(trim($up_year))&& !empty(trim($up_day)&& !empty(trim($up_account_date)))){
+		if(!empty(trim($add_title))&& !empty(trim($add_price))&& !empty(trim($add_account_category_idx))&& !empty(trim($add_payment_idx))
+			&& !empty(trim($add_month))&& !empty(trim($add_year))&& !empty(trim($add_day)&& !empty(trim($add_account_date)))){
 				$update_into = array(
-				'account_type' => $up_account_type,
-				'account_category_idx' => $up_account_category_idx,
-				'title' => $up_title,
-				'price' => $up_price,
-				'payment_idx' => $up_payment_idx,
-				'month' => $up_month,
-				'nyear' => $up_year,
-				'day' => $up_day,
-				'account_date' => $up_account_date,
-				'loan_yn' => $up_loan_yn,
-				'savings_yn' => $up_savings_yn
+				'account_type' => $add_account_type,
+				'account_category_idx' => $add_account_category_idx,
+				'title' => $add_title,
+				'price' => $add_price,
+				'payment_idx' => $add_payment_idx,
+				'month' => $add_month,
+				'nyear' => $add_year,
+				'day' => $add_day,
+				'account_date' => $add_account_date,
+				'loan_yn' => $add_loan_yn,
+				'savings_yn' => $add_savings_yn
 				);
-				if($up_savings_yn=='y'){
-					$update_into['savings_idx'] = $up_savings_idx; 
+				if($add_savings_yn=='y'){
+					$update_into['savings_idx'] = $add_savings_idx; 
 				}
-				if($up_loan_yn=='y'){
-					$update_into['savings_idx'] = $up_loan_idx;
+				if($add_loan_yn=='y'){
+					$update_into['savings_idx'] = $add_loan_idx;
 				}
-				if($up_memo!=''){
-					$update_into['memo'] = $up_memo;
+				if($add_memo!=''){
+					$update_into['memo'] = $add_memo;
 				}
-				$objdb->updateRow('acbook_account',$update_into,'account_idx='.$up_account_idx);
+				$objdb->updateRow('acbook_account',$update_into,'account_idx='.$add_account_idx);
 		}
-	}else{
+	}
+}else if($smode=='a_save'){
 		list($add_year, $add_month, $add_day) = explode('-', $add_account_date);
 		$add_savings_yn = (!empty(trim($add_savings_idx))) ? 'y' : 'n';
 		$add_loan_yn    = (!empty(trim($add_loan_idx))) ? 'y' : 'n';
@@ -67,16 +68,31 @@ if($smode =='a_save'){//����о�
 				);
 			if($add_savings_yn=='y'){
 				$insert_into['savings_idx'] = $add_savings_idx;
+				//적금금액 업데이트 
+				$sql = "select total_price from acbook_savings where savings_idx=".$add_savings_idx;
+				$s_row = $objdb->fetchRow($sql);
+				$up_total_price =$s_row['total_price']+$add_price;
+				$objdb->updateRow('acbook_savings',array('total_price' => $up_total_price),'savings_idx='.$add_savings_idx);
+
 			}
 			if($add_loan_yn=='y'){
-				$insert_into['savings_idx'] = $add_loan_idx;
+				$insert_into['loan_idx'] = $add_loan_idx;
+				$insert_into['loan_action'] = $add_loan_action;
+
+				//대출금액 업데이트 
+				$sql = "select total_amount from acbook_loan where loan_idx=".$add_loan_idx;
+				$l_row = $objdb->fetchRow($sql);
+				if($add_loan_action=='addpay'){//증액
+					$objdb->updateRow('acbook_loan',array('total_amount' => $l_row['total_amount']+$add_price),'loan_idx='.$add_loan_idx);
+				}else if($add_loan_action=='repay'){//상환
+					$objdb->updateRow('acbook_loan',array('total_amount' => $l_row['total_amount']-$add_price),'loan_idx='.$add_loan_idx);
+				}
 			}
 			if($add_memo!=''){
 				$insert_into['memo'] = $add_memo;
 			}
 			$objdb->insertRow('acbook_account',$insert_into	);
 		}
-	}
 	//�� �������� �ܾ� ����
 	/*$sql="select price from acbook_payment where payment_idx=".$payment_idx;
 	$row = $objdb->fetchRow($sql);

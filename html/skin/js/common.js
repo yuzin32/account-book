@@ -1,3 +1,13 @@
+function data_save(formName) { //저장 폼전송 실행
+    const form = document.forms[formName]; // 폼 이름으로 선택
+        form.submit(); // submit 함수 호출
+}
+function data_del(formName,smode) {//삭제 폼전송 실행
+    const form = document.forms[formName]; // 폼 이름으로 선택
+	form["smode"].value = smode;
+    form.submit(); // submit 함수 호출
+}
+
 function list_title_set(type){
 var p = document.querySelector('p.mh-label');
     if(type=="in_list"){
@@ -10,6 +20,7 @@ var p = document.querySelector('p.mh-label');
         p.textContent = p.textContent.trim().replace(/^\[.*?\]/, '[채무]');
     }
 }
+
 $(document).ready(function(){
 
     // tab
@@ -56,9 +67,14 @@ $(document).ready(function(){
     // 모달창 열기
     $(".modal-open").click(function(){
         var target = $(this).data('modal');
+        var form = $(this).data('form');
+        var mode = $(this).data('mode');
+
         var load = $(this).data('load');
         var idx = $(this).data('idx');
+
         $("div.modal-wrap." + target).show();
+        new_open_set(form,mode);
 
         if(target == "total-list"){
             //리스트 타입
@@ -68,14 +84,49 @@ $(document).ready(function(){
 
             // 처음 1페이지 데이터 로드 해당페이지에 데이터로드함수생성
             loadPage(1);
-        }else if(load == "load"){
-            //상세페이지 로드 해당페이지에 데이터로드함수생성
-            dataload(idx);
+        }
+        if(load == "load"){
+            var page = page || 1;
+            //상세페이지 데이터로드 해당페이지에 데이터로드함수생성
+            dataload(idx,target,page);
         }
     });
 
     
 });
+
+//폼을깨끗하게
+function clearForm(formSelector) {
+    const $form = $('#'+formSelector);
+    if ($form.length === 0) {
+        console.warn('Form not found:', formSelector);
+        return;
+    }
+
+    // 모든 input / textarea 값 제거
+    $form.find('input, textarea').each(function () {
+        const type = $(this).attr('type');
+
+        if (type === 'checkbox' || type === 'radio') {
+            $(this).prop('checked', false);
+        } else {
+            $(this).val('');
+        }
+    });
+
+    // select 초기화
+    $form.find('select').prop('selectedIndex', 0);
+
+    // readonly / disabled 복구 (중요)
+    $form.find('input, textarea, select')
+         .prop('readonly', false)
+         .prop('disabled', false);
+}
+
+function new_open_set(form,mode) {//폼셋팅
+    clearForm(form);
+    $('#'+form).find('#smode').val(mode);
+}
 
 function checkAll(ch,form) {
     const checkboxes = form.querySelectorAll('input[type="checkbox"]');
@@ -119,29 +170,3 @@ function find_maxnum(inputname) {
     return maxnum ?? 0;
 }
 
-function clearForm(formSelector) {
-    const $form = $('#'+formSelector);
-    if ($form.length === 0) {
-        console.warn('Form not found:', formSelector);
-        return;
-    }
-
-    // 모든 input / textarea 값 제거
-    $form.find('input, textarea').each(function () {
-        const type = $(this).attr('type');
-
-        if (type === 'checkbox' || type === 'radio') {
-            $(this).prop('checked', false);
-        } else {
-            $(this).val('');
-        }
-    });
-
-    // select 초기화
-    $form.find('select').prop('selectedIndex', 0);
-
-    // readonly / disabled 복구 (중요)
-    $form.find('input, textarea, select')
-         .prop('readonly', false)
-         .prop('disabled', false);
-}
